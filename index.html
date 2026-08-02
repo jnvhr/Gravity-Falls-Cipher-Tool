@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRAVITY FALLS · Cipher Engine</title>
+<title>Gravity Falls · Cipher Tool</title>
+<!-- Dipper's pine tree favicon (inline SVG: matches the Season-1 nav logo — gold pine + trunk on dark rounded square) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%23130907'/%3E%3Cpath%20d='M32%2011%2045%2033h-8l14.5%2023H12.5L27%2033h-8z'%20fill='none'%20stroke='%23e8b74a'%20stroke-width='3.6'%20stroke-linejoin='round'/%3E%3Cpath%20d='M27.5%2056h9v8h-9z'%20fill='none'%20stroke='%23e8b74a'%20stroke-width='3.6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Rye&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1643,7 +1645,7 @@ function setTheme(t){
   $('#btnS2').classList.toggle('active', t==='s2');
   $('#btnS1').setAttribute('aria-pressed', t==='s1');
   $('#btnS2').setAttribute('aria-pressed', t==='s2');
-  document.title = t==='s1' ? 'GRAVITY FALLS · Cipher Engine' : 'WEIRDMAGEDDON · Cipher Engine';
+  document.title = t==='s1' ? 'Gravity Falls · Cipher Tool' : 'WEIRDMAGEDDON · Cipher Tool';
   const T = THEME_TEXT[t];
   /* Swap text in place (no opacity flicker). The hero scene cross-fades via
      CSS opacity/visibility on body[data-theme]; keeping the copy visible while
@@ -1661,7 +1663,10 @@ function setTheme(t){
 }
 $('#btnS1').addEventListener('click', ()=>setTheme('s1'));
 $('#btnS2').addEventListener('click', ()=>setTheme('s2'));
-let saved='s1'; try{ saved = localStorage.getItem('gf-theme') || 's1'; }catch(e){}
+/* Always open on Season 1 — the site no longer restores a previously saved
+   season across visits. The user's toggle choice is still remembered within
+   the session via localStorage, but first paint is ALWAYS Season 1. */
+let saved='s1';
 // initial paint: set dataset directly (no-op guard would skip the swap fill)
 document.body.dataset.theme = saved;
 { const T = THEME_TEXT[saved];
@@ -1674,7 +1679,7 @@ document.body.dataset.theme = saved;
     else if(key==='title'){ el.textContent=T.title; currentTitle=T.title; }  // first paint: no countdown effect
     else{ el.textContent = T[key]; }
   });
-  document.title = saved==='s1' ? 'GRAVITY FALLS · Cipher Engine' : 'WEIRDMAGEDDON · Cipher Engine';
+  document.title = saved==='s1' ? 'Gravity Falls · Cipher Tool' : 'WEIRDMAGEDDON · Cipher Tool';
   document.querySelector('[data-swap="title"]').textContent = T.title;
   currentTitle = T.title;
   $('#btnS1').classList.toggle('active', saved==='s1');
