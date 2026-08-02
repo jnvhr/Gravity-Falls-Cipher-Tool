@@ -1,0 +1,31 @@
+# Dev source files — not needed for deployment
+assets/
+*.json
+*.DS_Store
+
+# Loose source images (baked into the HTML already)
+bill_cipher1 Medium.png
+bill_cipher2 Medium.png
+bill_cipher_pos.jpg
+dipper_floating2.png
+gideon_evil_face1.png
+mabel_levitate_noBG.png
+mabel-char-closeup.png
+gideon_evil_face1.png
+
+# Test screenshots and animation frames
+_t_*.png
+_final_*.png
+*screenshot*.png
+idle*.png
+hover*.png
+mid-*.png
+exit-*.png
+hero-*.png
+gideon-*.png
+mabel-char-closeup.png
+scene-*.png
+pendant-*.png
+idle-*.png
+full-page*.png
+hover-*.png
