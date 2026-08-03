@@ -725,6 +725,9 @@ body[data-theme="s2"] .phase-col.col-s1{display:none}
 .ep .badge{grid-column:2;font-size:.55rem;font-weight:700;letter-spacing:.24em;
   border:1px solid var(--accent);color:var(--accent);padding:.28em .6em;justify-self:start;
   border-radius:var(--rad)}
+/* Dual-layer tag rows (Weirdmageddon 1 & 2): SYMBOL and VIGENÈRE pills sit
+   side-by-side in a single flex row inside the card's column-2 cell. */
+.ep .tags{grid-column:2;display:flex;gap:.45em;justify-self:start}
 .arm{font-size:.58rem;font-weight:700;letter-spacing:.22em;padding:.75em .95em;
   border:1px solid var(--line-strong);border-radius:var(--rad);background:transparent;
   color:var(--accent);cursor:pointer;transition:background .25s,color .25s,transform .2s}
@@ -1330,13 +1333,10 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
       <div class="ep"><span class="num">10</span><div><h4>Fight Fighters</h4><p class="enote">Arcade code. The alphabet folds.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
       <div class="ep"><span class="num">11</span><div><h4>Little Dipper</h4><p class="enote">Shrink the world — the mirror holds.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
 
-      <p class="phase-h">PHASE 3 · THE CANDY MONSTER SHORT</p>
-      <p class="phase-d">Dipper's Guide #1 · right after the kids sort their Halloween candy · has a credit cryptogram + a hidden puzzle piece</p>
-      <div class="ep short"><span class="num">S1</span><div><h4>Candy Monster</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Credit cryptogram uses Caesar — and a hidden image slice waits after the credits.</p></div><button class="arm" data-method="caesar" data-key="3">ARM</button><span class="badge">CAESAR · 3</span></div>
-
-      <p class="phase-h">PHASE 4 · COMBINED CIPHERS & THE SHACK SHORTS</p>
-      <p class="phase-d">S1 Eps 12–19 · Eps 12–13 Atbash, Eps 14–19 A1Z26 · then the 16 shorts — Dipper's Guide shorts carry cryptograms + a hidden puzzle-piece frame after the credits (collect all six and they stack into one big map/image); Mabel / Soos / TV / Scrapbook shorts have no credit cipher at all</p>
+      <p class="phase-h">PHASE 3 · THE COMBINED CIPHER ERA</p>
+      <p class="phase-d">S1 Eps 12–19 · Eps 12–13 Atbash, Eps 14–19 A1Z26 · the six Dipper's Guide shorts each hide a numerical code (A1Z26) at the very end — line up all six background screens and they form a single puzzle page from the Journal</p>
       <div class="ep"><span class="num">12</span><div><h4>Summerween</h4><p class="enote">Atbash one last summer night.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
+      <div class="ep short"><span class="num">S1</span><div><h4>Candy Monster</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #1 — watch right after Summerween; hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
       <div class="ep"><span class="num">13</span><div><h4>Boss Mabel</h4><p class="enote">Last Atbash. The numbers arrive next.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
       <div class="ep"><span class="num">14</span><div><h4>Bottomless Pit!</h4><p class="enote">Numbers trade places with letters.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
       <div class="ep"><span class="num">15</span><div><h4>The Deep End</h4><p class="enote">Pool mermaid. Count the digits.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
@@ -1344,11 +1344,18 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
       <div class="ep"><span class="num">17</span><div><h4>Boyz Crazy</h4><p class="enote">Hypnotic hits. A1Z26 holds.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
       <div class="ep"><span class="num">18</span><div><h4>Land Before Swine</h4><p class="enote">Dinosaurs loose. Numbers count.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
       <div class="ep"><span class="num">19</span><div><h4>Dreamscaperers</h4><p class="enote">Bill's first deal. Numbers still counting.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
-      <div class="ep short"><span class="num">S2</span><div><h4>Stan's Tattoo</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #2 — credit cryptogram runs on Atbash.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
-      <div class="ep short"><span class="num">S3</span><div><h4>Mailbox</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #3 — credit cryptogram runs on Atbash.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
-      <div class="ep short"><span class="num">S4</span><div><h4>Lefty</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #4 — credit cryptogram runs on Atbash.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
-      <div class="ep short"><span class="num">S5</span><div><h4>Tooth</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #5 — the count-up era: credit cryptogram in A1Z26.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
-      <div class="ep short"><span class="num">S6</span><div><h4>The Hide-Behind</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #6 — credit cryptogram in A1Z26.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
+
+      <p class="phase-h">PHASE 4 · THE SEASON 1 CLIMAX</p>
+      <p class="phase-d">S1 Ep 20 · Gideon is defeated and arrested · end credits are a layered shell — A1Z26 first, unwrap into Atbash, then Caesar to read the final line · the door is left open for the number-hunt shorts that follow all summer long</p>
+      <div class="ep"><span class="num">20</span><div><h4>Gideon Rises</h4><p class="enote">A multi-layer puzzle. ARM primes the engine for the chain — decode A1Z26 → Atbash → Caesar in that order.</p></div><button class="arm" data-method="chain">ARM</button><span class="badge">CHAIN</span></div>
+
+      <p class="phase-h">PHASE 5 · THE SUMMER INTERMISSION · THE SHORTS PACK</p>
+      <p class="phase-d">The 16 shorts · bridges the gap between seasons — Stan has the Journal, the Shack is saved, and Gideon now plots from his prison cell · Dipper's Guide shorts (S2–S6) hide A1Z26 codes whose background screens stack into one Journal puzzle page · Mabel / Soos / TV / Scrapbook shorts have no credit cipher at all</p>
+      <div class="ep short"><span class="num">S2</span><div><h4>Stan's Tattoo</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #2 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
+      <div class="ep short"><span class="num">S3</span><div><h4>Mailbox</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #3 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
+      <div class="ep short"><span class="num">S4</span><div><h4>Lefty</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #4 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
+      <div class="ep short"><span class="num">S5</span><div><h4>Tooth</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #5 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
+      <div class="ep short"><span class="num">S6</span><div><h4>The Hide-Behind</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #6 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
       <div class="ep short"><span class="num">S7</span><div><h4>Mabel's Guide to Dating</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram here — just Mabel quizzing the bachelors.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
       <div class="ep short"><span class="num">S8</span><div><h4>Mabel's Guide to Stickers</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram — pure sticker history.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
       <div class="ep short"><span class="num">S9</span><div><h4>Mabel's Guide to Fashion</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram — flash makeover time, nothing to decode.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
@@ -1360,10 +1367,6 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
       <div class="ep short"><span class="num">S15</span><div><h4>TV Shorts 2</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram — Why You Ackin So Cray-Cray.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
       <div class="ep short"><span class="num">S16</span><div><h4>Mabel's Scrapbook: Heist Movie</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram — breaking into the theatre.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
       <div class="ep short"><span class="num">S17</span><div><h4>Mabel's Scrapbook: Petting Zoo</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram — the family petting zoo trip.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
-
-      <p class="phase-h">PHASE 5 · THE SEASON 1 FINALE</p>
-      <p class="phase-d">S1 Ep 20 · end credits are a layered shell — A1Z26 first, unwrap into Atbash, then Caesar to read the final line</p>
-      <div class="ep"><span class="num">20</span><div><h4>Gideon Rises</h4><p class="enote">A multi-layer puzzle. ARM primes the engine for the chain — decode A1Z26 → Atbash → Caesar in that order.</p></div><button class="arm" data-method="chain">ARM</button><span class="badge">CHAIN</span></div>
     </div>
     <div class="phase-col col-s2">
       <h3>SEASON 2 · THE WEIRDMAGEDDON</h3>
@@ -1395,8 +1398,8 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
       <div class="ep"><span class="num">15</span><div><h4>The Last Mabelcorn</h4><p class="enote">Purest unicorn. The key is in the vault.</p></div><button class="arm" data-method="vigenere">ARM</button><span class="badge">VIGENÈRE</span></div>
       <div class="ep"><span class="num">16</span><div><h4>Roadside Attraction</h4><p class="enote">Last tourist trap. The key is roadside.</p></div><button class="arm" data-method="vigenere">ARM</button><span class="badge">VIGENÈRE</span></div>
       <div class="ep"><span class="num">17</span><div><h4>Dipper and Mabel vs. the Future</h4><p class="enote">The rift cracks. The key is the rift.</p></div><button class="arm" data-method="vigenere">ARM</button><span class="badge">VIGENÈRE</span></div>
-      <div class="ep"><span class="num">18</span><div><h4>Weirdmageddon Part 1</h4><p class="enote">Bill stacks ciphers like deals.</p></div><button class="arm" data-method="vigenere">ARM</button><span class="badge">VIGENÈRE</span></div>
-      <div class="ep"><span class="num">19</span><div><h4>Weirdmageddon 2: Escape From Reality</h4><p class="enote">The bubble. The key is a memory.</p></div><button class="arm" data-method="vigenere">ARM</button><span class="badge">VIGENÈRE</span></div>
+      <div class="ep"><span class="num">18</span><div><h4>Weirdmageddon Part 1</h4><p class="enote">Bill stacks ciphers like deals. Translate the glyphs first, then find the key.</p></div><button class="arm" data-method="subst">ARM</button><span class="tags"><span class="badge">SYMBOL</span><span class="badge">VIGENÈRE</span></span></div>
+      <div class="ep"><span class="num">19</span><div><h4>Weirdmageddon 2: Escape From Reality</h4><p class="enote">The bubble. The key is a memory. Decode the symbols before running the Vigenère row.</p></div><button class="arm" data-method="subst">ARM</button><span class="tags"><span class="badge">SYMBOL</span><span class="badge">VIGENÈRE</span></span></div>
 
       <p class="phase-h">PHASE 9 · THE FINALE RECAP</p>
       <p class="phase-d">Special · airs right before the finale · commentary on the show's secrets · its closing frame stacks symbol-cipher glyphs instead of a normal text credit</p>
@@ -1413,7 +1416,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
 <footer class="reveal">
   <p class="quote" data-swap="footQuote">"TRUST THE JOURNAL. THE FOREST REMEMBERS WHAT THE MIND FORGETS."</p>
   <p class="fineprint" data-swap="footFine">
-    CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS ENGINE NEVER STORES OR REVEALS DECODED SHOW CONTENT —
+    CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS TOOL NEVER STORES OR REVEALS DECODED SHOW CONTENT —
     IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE JOURNAL IS REAL. GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER
   </p>
   <p class="fineprint copyline">
@@ -1574,7 +1577,7 @@ const THEME_TEXT = {
     phasenote:'season one, in chronological watch order — the engine arms itself, you supply the ciphertext',
     ticker:' ✦ TRUST THE FOREST ✦ THE JOURNAL IS REAL ✦ KEEP WATCHING THE CREDITS ✦ SOMETHING IS WRONG WITH GRAVITY FALLS ✦ 618 ✦ A SUMMER OF SECRETS',
     footQuote:'"TRUST THE JOURNAL. THE FOREST REMEMBERS WHAT THE MIND FORGETS."',
-    footFine:'CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS ENGINE NEVER STORES OR REVEALS DECODED SHOW CONTENT — IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE JOURNAL IS REAL. GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER'
+    footFine:'CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS TOOL NEVER STORES OR REVEALS DECODED SHOW CONTENT — IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE JOURNAL IS REAL. GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER'
   },
   s2:{
     logoTitle:'WEIRDMAGEDDON',
@@ -1586,7 +1589,7 @@ const THEME_TEXT = {
     phasenote:'season two, in chronological watch order — the engine arms itself, you supply the ciphertext',
     ticker:' ▲ WEIRDMAGEDDON IS HERE ▲ REALITY IS A HOAX ▲ BILL CIPHER REIGNS ▲ THE UNIVERSE IS A HOLOGRAM ▲ BUY GOLD ▲ TRUST NO ONE',
     footQuote:'"REALITY IS AN ILLUSION, THE UNIVERSE IS A HOLOGRAM, BUY GOLD, BYE!"',
-    footFine:'CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS ENGINE NEVER STORES OR REVEALS DECODED SHOW CONTENT — IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE UNIVERSE IS A HOLOGRAM. BUY GOLD. BYE.<br>GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER'
+    footFine:'CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS TOOL NEVER STORES OR REVEALS DECODED SHOW CONTENT — IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE UNIVERSE IS A HOLOGRAM. BUY GOLD. BYE.<br>GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER'
   }
 };
 const $ = s => document.querySelector(s);
