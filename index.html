@@ -650,6 +650,14 @@ h2::before{content:'▲ ';font-size:.6em;vertical-align:.25em;color:var(--muted)
   background:var(--panel);color:var(--panel-ink);box-shadow:var(--shadow);transition:background .7s}
 .keypanel.stitched{outline:1px dashed var(--stitch);outline-offset:-6px}
 .keypanel h5{font-size:.6rem;font-weight:700;letter-spacing:.3em;color:var(--muted);margin-bottom:.7rem}
+.keypanel select{width:100%;background:transparent;border:1px solid var(--line-strong);border-radius:var(--rad);
+  padding:.65em .8em;color:inherit;font:600 .72rem 'IBM Plex Mono',monospace;letter-spacing:.06em;
+  margin-bottom:.55rem;appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 1.2em) 55%,calc(100% - .85em) 55%;background-size:.35em .35em;background-repeat:no-repeat}
+.keypanel select:focus{border-color:var(--accent)}
+.keypanel select option{color:#241708;background:#eee0b8}
+.keypanel .keyhint a{color:var(--accent);border-bottom:1px dashed var(--line-strong);text-decoration:none}
 .keypanel input[type=number],.keypanel input[type=text],.step select,.step input{
   width:100%;background:transparent;border:1px solid var(--line-strong);border-radius:var(--rad);
   padding:.65em .8em;color:inherit;font:600 .8rem 'IBM Plex Mono',monospace;letter-spacing:.08em}
@@ -731,6 +739,12 @@ body[data-theme="s2"] .phase-col.col-s1{display:none}
 .arm{font-size:.58rem;font-weight:700;letter-spacing:.22em;padding:.75em .95em;
   border:1px solid var(--line-strong);border-radius:var(--rad);background:transparent;
   color:var(--accent);cursor:pointer;transition:background .25s,color .25s,transform .2s}
+.arm:hover{border-color:var(--accent);background:rgba(232,183,74,.12);transform:translateY(-1px)}
+/* nav quick-link */
+.navlink{margin-left:auto;font-size:.58rem;font-weight:700;letter-spacing:.26em;color:var(--muted);
+  text-decoration:none;padding:.6em 1em;border:1px solid var(--line-strong);border-radius:var(--rad);
+  transition:color .2s,border-color .2s,transform .2s}
+.navlink:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-1px)}
 /* NO-CIPHER indicator chip — replaces the ARM button on shorts that carry no
    end-credit cryptogram (Mabel's Guide, Fixin' It with Soos, TV Shorts,
    Scrapbook). Reads as a quiet "nothing to arm" tag; clicking does nothing. */
@@ -752,6 +766,105 @@ body[data-theme="s1"] .col-s1 .hint{color:#7a5216;font-weight:600;
 .ep .enote .hint{font-family:'IBM Plex Mono',monospace;font-size:.52rem}
 /* For .nochip rows we dim the ARM-slot so the card doesn't invite a click. */
 .ep .nochip:hover{border-color:var(--muted)}
+
+/* ============ AUTHOR GLYPH KEY ============ */
+/* Decrypt clicks a letter to record the glyph it stands for; encrypt clicks a
+   glyph to set which glyph encrypts that letter. Long-press or right-click
+   forgets the letter's binding. Bindings persist per-browser via localStorage —
+   YOUR key, your browser, never the show's decoded content. */
+.gkey{display:grid;grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:.34rem;margin-top:.15rem}
+.gcell{display:flex;flex-direction:column;align-items:center;gap:.22rem;
+  padding:.36em .1em .3em;border:1px solid var(--line-strong);border-radius:var(--rad);
+  background:transparent;color:inherit;cursor:pointer;transition:border-color .2s,transform .18s,box-shadow .25s;
+  position:relative}
+.gcell:hover{border-color:var(--accent);transform:translateY(-2px)}
+.gcell span{font-size:.64rem;font-weight:700;letter-spacing:.1em;color:var(--accent)}
+.gcell svg{width:26px;height:26px;color:currentColor}
+.gcell svg.billg{width:30px;height:30px}
+.gcell svg *{fill:none !important;stroke:currentColor !important;stroke-width:6.5;stroke-linecap:square;stroke-linejoin:miter}
+.gcell svg .fillstrokeofill{stroke:currentColor !important;fill:currentColor !important;stroke-width:1}
+.gcell.bound svg{color:var(--accent)}
+.keybar{display:flex;align-items:center;gap:.5rem;margin:.55rem 0 .4rem;
+  font-size:.5rem;font-weight:700;letter-spacing:.22em;color:var(--muted);flex-wrap:wrap}
+.keybar span{flex:1;min-width:12ch}
+.keybar button{font-size:.48rem;font-weight:700;letter-spacing:.16em;color:var(--muted);
+  background:transparent;border:1px dashed var(--line-strong);border-radius:var(--rad);
+  padding:.35em .6em;cursor:pointer;transition:color .2s,border-color .2s}
+.keybar button:hover{color:var(--accent);border-color:var(--accent)}
+.keybar button.dirty{color:var(--accent);border-color:var(--accent);border-style:solid}
+.keyhint.tiny{font-size:.5rem;letter-spacing:.18em}
+
+/* ============ SCREENSHOT FRAME VAULT ============ */
+/* Upload zone + thumbnail gallery. Both themes (and the drop highlight state)
+   use the @property tokens so the highlight cross-fades with the season swap.
+   Frames persist per-browser (localStorage, data-URL); nothing leaves the machine. */
+body{--upbg1:rgba(232,183,74,.34);--upbg2:rgba(232,183,74,0)}
+body[data-theme="s2"]{--upbg1:rgba(198,34,58,.34);--upbg2:rgba(198,34,58,0)}
+body[data-theme="s1"]{--upbg1:rgba(232,183,74,.34);--upbg2:rgba(232,183,74,0)}
+.vault{max-width:1220px;margin:0 auto;padding:.2rem 1.5rem 4.5rem}
+.drop{display:flex;flex-direction:column;align-items:center;gap:.45rem;
+  padding:2.2rem 1.4rem;text-align:center;cursor:pointer;
+  border:2px dashed var(--line-strong);border-radius:calc(var(--rad) + 4px);
+  background:
+    radial-gradient(600px 140px at 50% 118%, var(--upbg1), var(--upbg2) 70%),
+    var(--panel);
+  color:var(--panel-ink);
+  transition:border-color .25s,transform .25s,box-shadow .3s,
+    --upbg1 .45s ease,--upbg2 .45s ease,background .3s}
+.drop:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px var(--glow)}
+.drop.hot{border-color:var(--accent);--upbg1:rgba(232,183,74,.75)}
+body[data-theme="s2"] .drop.hot{--upbg1:rgba(198,34,58,.75)}
+.drop.hot{border-style:solid}
+.drop.deny{border-color:#c0392b;--upbg1:rgba(192,57,43,.55)}
+.drop .d-ico{font-size:1.9rem;line-height:1;color:var(--accent)}
+.drop .d-main{font-family:'Rye',cursive;font-size:1.02rem;letter-spacing:.04em;color:var(--accent)}
+.drop .d-sub{font-size:.58rem;font-weight:700;letter-spacing:.22em;color:var(--muted);margin-top:.25rem}
+.drop .d-note{font-family:'Caveat',cursive;font-size:.98rem;color:var(--muted)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:.7rem;margin-top:1rem}
+.vcard{position:relative;border:1px solid var(--line);border-radius:var(--rad);overflow:hidden;
+  background:var(--navbg);cursor:zoom-in;animation:phaseIn .4s ease;
+  transition:transform .25s,border-color .25s,box-shadow .3s}
+.vcard:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 26px -14px var(--glow)}
+.vcard img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.vcard .vcap{display:flex;justify-content:space-between;align-items:center;gap:.5rem;
+  padding:.4em .6em;font-size:.54rem;letter-spacing:.08em;color:var(--accent2)}
+body[data-theme="s1"] .vcard .vcap{color:#e8c37c}
+.vcard .vcap i{font-style:normal;opacity:.55;flex-shrink:0}
+.vrm{position:absolute;top:.35rem;right:.35rem;width:22px;height:22px;border-radius:var(--rad);
+  border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.62);color:#fff;font-size:.72rem;line-height:1;
+  cursor:pointer;opacity:0;transition:opacity .2s,background .2s}
+.vcard:hover .vrm,.vrm:focus-visible{opacity:1}
+.vrm:hover{background:#c0392b}
+.vempty{margin-top:1rem;border:1px dashed var(--line);border-radius:var(--rad);padding:2rem 1rem;text-align:center}
+.vempty p{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--muted)}
+.vempty span{display:block;margin-top:.5rem;font-size:.56rem;letter-spacing:.26em;color:var(--muted)}
+.vwarn{margin-top:1rem;font-size:.62rem;letter-spacing:.14em;color:#c0392b;animation:fadeUp .3s ease}
+.lightbox{position:fixed;inset:0;z-index:99;display:none;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;
+  background:rgba(6,4,2,.94);backdrop-filter:blur(4px)}
+.lightbox.open{display:flex;animation:phaseIn .25s ease}
+.lightbox img{max-width:92vw;max-height:79vh;object-fit:contain;border:1px solid var(--line);border-radius:var(--rad);
+  box-shadow:0 30px 80px -20px #000}
+.lightbox figcaption{font-family:'Caveat',cursive;font-size:1.25rem;color:var(--accent2)}
+.lightbox .lb-tools{display:flex;gap:1rem;align-items:center}
+.lightbox button{font-size:.56rem;font-weight:700;letter-spacing:.2em;color:var(--muted);background:transparent;
+  border:1px solid var(--line-strong);border-radius:var(--rad);padding:.55em 1em;cursor:pointer;transition:color .2s,border-color .2s}
+.lightbox button:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ============ PHASES CALLOUT ============ */
+/* The puzzle-piece note card between the episode tracker and the footer —
+   references the blank key rows in the tool (safe: no answers on-page). */
+.callout{max-width:1220px;margin:0 auto;padding:0 1.5rem 4.5rem}
+.callout>div{max-width:100%;border:1px solid var(--line);border-radius:var(--rad);
+  background:var(--panel);color:var(--panel-ink);padding:1.5rem 1.6rem;
+  outline:1px dashed var(--stitch);outline-offset:-6px;box-shadow:var(--shadow)}
+.callout h3{font-family:'Rye',cursive;font-weight:400;font-size:1.12rem;letter-spacing:.03em;color:var(--accent);margin-bottom:.45rem}
+.callout .cl-body{font-family:'Caveat',cursive;font-size:1.14rem;line-height:1.4;color:var(--muted);max-width:76ch}
+.callout .cl-body b{color:var(--accent2)}
+body[data-theme="s1"] .callout .cl-body b{color:#7a5216}
+.callout .cl-links{display:flex;flex-wrap:wrap;gap:1.4rem;margin-top:.8rem}
+.callout .cl-links a{font-size:.58rem;font-weight:700;letter-spacing:.22em;color:var(--accent);
+  text-decoration:none;border-bottom:1px dashed var(--line-strong);padding-bottom:.2em;transition:color .2s,border-color .2s}
+.callout .cl-links a:hover{color:var(--accent2);border-color:var(--accent)}
 /* ============ BILL CIPHER IN WHEELWRAP (S2 only) ============ */
 /* The wheelwrap hosts either the cipher wheel (S1) or Bill Cipher (S2).
    In S2: cipher wheel SVG hidden, Bill Cipher shown. Hover triggers all source-site animations. */
@@ -1140,10 +1253,11 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
     </span>
     <span class="lt"><b data-swap="logoTitle">AWAKENING</b><i data-swap="logoSub">SUMMER OF SECRETS</i></span>
   </a>
-  <div class="season-toggle" role="group" aria-label="Theme">
+    <div class="season-toggle" role="group" aria-label="Theme">
     <button id="btnS1" class="active" aria-pressed="true">SEASON 1</button>
     <button id="btnS2" aria-pressed="false">SEASON 2</button>
   </div>
+  <a class="navlink" href="#vault">⛶ FRAMES</a>
 </nav>
 
 <!-- ===== MASTHEAD ===== -->
@@ -1226,7 +1340,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
 <section id="tool">
   <div class="sect-head reveal">
     <h2>The Cipher Wheel Speaks</h2>
-    <p class="sect-note">reference-only assignments — the engine never stores or reveals decoded show content</p>
+    <p class="sect-note">reference-only assignments — the engine runs the math, never hands you the answers</p>
   </div>
 
   <div class="tool">
@@ -1238,6 +1352,9 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
       <button class="method" data-method="vigenere"><span class="mname">VIGENÈRE</span><span class="midx">KEYWORD</span></button>
       <button class="method" data-method="subst"><span class="mname">SUBSTITUTION</span><span class="midx">CUSTOM</span></button>
       <button class="method" data-method="chain"><span class="mname">CHAIN MODE</span><span class="midx">LAYERS</span></button>
+      <p class="rail-label">SPECIAL KEYS</p>
+      <button class="method" data-method="epmeta"><span class="mname">EPISODE KEY</span><span class="midx">[[EP]] i,j,k</span></button>
+      <button class="method" data-method="author"><span class="mname">AUTHOR SYMBOLS</span><span class="midx">GLYPH KEY</span></button>
 
       <p class="rail-label">DIRECTION</p>
       <div class="mode">
@@ -1274,6 +1391,18 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
           <div id="chainSteps"></div>
           <button class="btn addstep" id="addStep">+ ADD LAYER</button>
           <p class="keyhint">Encrypt runs top → bottom. Decrypt peels bottom → top, inverting each layer.</p>
+        </div>
+        <div class="keyarea" data-key="epmeta">
+          <h5>EPISODE METADATA KEY · [[EP]] i, j, k</h5>
+          <select id="epEp"></select>
+          <input type="text" id="epIdx" placeholder="positions — e.g. 8, 9, 10 · 14, 17, 22" spellcheck="false">
+          <p class="keyhint">The number by the screen picks the episode; the red numbers read that many letters off its decoded credits — "[[EP]] 8, 9, 10" pulls those letters in order. Add "·" to start a new word.</p>
+        </div>
+        <div class="keyarea" data-key="author">
+          <h5>THE AUTHOR'S SYMBOL ALPHABET</h5>
+          <div class="keybar"><span id="gMapCount">0 / 26 GLYPHS KEYED</span><button id="gMapClear">FORGET ALL</button></div>
+          <div class="gkey" id="gKey"></div>
+          <p class="keyhint">Decrypt: tap a letter to record the glyph it stands for from your screenshot. Encrypt: tap a glyph to make it stand for that letter. Long-press or right-click to forget a letter. The key chart lives on the <a href="https://gravityfalls.fandom.com/wiki/List_of_cryptograms/Books" target="_blank" rel="noopener">Wiki · Author's Symbol Alphabet&nbsp;↗</a> — snap it into the vault below for a side-by-side cheat sheet. Bindings stay on this browser.</p>
         </div>
       </div>
     </aside>
@@ -1334,10 +1463,10 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
       <div class="ep"><span class="num">11</span><div><h4>Little Dipper</h4><p class="enote">Shrink the world — the mirror holds.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
 
       <p class="phase-h">PHASE 3 · THE COMBINED CIPHER ERA</p>
-      <p class="phase-d">S1 Eps 12–19 · Eps 12–13 Atbash, Eps 14–19 A1Z26 · the six Dipper's Guide shorts each hide a numerical code (A1Z26) at the very end — line up all six background screens and they form a single puzzle page from the Journal</p>
+      <p class="phase-d">S1 Eps 12–19 · Eps 12–13 Atbash, Eps 14–19 A1Z26 · the six Dipper's Guide shorts each end on a flash-frame puzzle piece — a single screen carrying three layered codes at once: a Caesar-3 line of text, red episode-metadata numbers ([[EP]] i, j, k — pull those letters from that episode's decoded credits), and the Author's block-symbol alphabet · line up all six and they form a single puzzle page from the Journal</p>
       <div class="ep"><span class="num">12</span><div><h4>Summerween</h4><p class="enote">Atbash one last summer night.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
-      <div class="ep short"><span class="num">S1</span><div><h4>Candy Monster</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #1 — watch right after Summerween; hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
-      <div class="ep"><span class="num">13</span><div><h4>Boss Mabel</h4><p class="enote">Last Atbash. The numbers arrive next.</p></div><button class="arm" data-method="atbash">ARM</button><span class="badge">ATBASH</span></div>
+      <div class="ep short"><span class="num">S1</span><div><h4>Candy Monster</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #1 — watch right after Summerween; the flash frame stacks THREE codes: the bottom line is Caesar 3, the red numbers are an episode-metadata key (episode → letters), and the block grid is the Author's symbol alphabet.</p></div><button class="arm" data-method="caesar" data-key="3">ARM</button><span class="tags"><span class="badge">CAESAR · 3</span><span class="badge">EPISODE KEY</span><span class="badge">AUTHOR SYMBOLS</span></span></div>
+      <div class="ep"><span class="num">13</span><div><h4>Boss Mabel</h4><p class="enote">Last Atbash — and the red numbers on puzzle screens point here: [[EP]] i, j, k reads letters from this episode's decoded credits.</p></div><button class="arm" data-method="atbash">ARM</button><span class="tags"><span class="badge">ATBASH</span><span class="badge">EPISODE KEY</span></span></div>
       <div class="ep"><span class="num">14</span><div><h4>Bottomless Pit!</h4><p class="enote">Numbers trade places with letters.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
       <div class="ep"><span class="num">15</span><div><h4>The Deep End</h4><p class="enote">Pool mermaid. Count the digits.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
       <div class="ep"><span class="num">16</span><div><h4>Carpet Diem</h4><p class="enote">Body swap. Numbers don't lie.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
@@ -1350,12 +1479,12 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
       <div class="ep"><span class="num">20</span><div><h4>Gideon Rises</h4><p class="enote">A multi-layer puzzle. ARM primes the engine for the chain — decode A1Z26 → Atbash → Caesar in that order.</p></div><button class="arm" data-method="chain">ARM</button><span class="badge">CHAIN</span></div>
 
       <p class="phase-h">PHASE 5 · THE SUMMER INTERMISSION · THE SHORTS PACK</p>
-      <p class="phase-d">The 16 shorts · bridges the gap between seasons — Stan has the Journal, the Shack is saved, and Gideon now plots from his prison cell · Dipper's Guide shorts (S2–S6) hide A1Z26 codes whose background screens stack into one Journal puzzle page · Mabel / Soos / TV / Scrapbook shorts have no credit cipher at all</p>
-      <div class="ep short"><span class="num">S2</span><div><h4>Stan's Tattoo</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #2 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
-      <div class="ep short"><span class="num">S3</span><div><h4>Mailbox</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #3 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
-      <div class="ep short"><span class="num">S4</span><div><h4>Lefty</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #4 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
-      <div class="ep short"><span class="num">S5</span><div><h4>Tooth</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #5 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
-      <div class="ep short"><span class="num">S6</span><div><h4>The Hide-Behind</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #6 — hides a numerical code (A1Z26) at the very end.</p></div><button class="arm" data-method="a1z26">ARM</button><span class="badge">A1Z26</span></div>
+      <p class="phase-d">The 16 shorts · bridges the gap between seasons — Stan has the Journal, the Shack is saved, and Gideon now plots from his prison cell · Dipper's Guide shorts (S2–S6) end on more flash-frame puzzle pieces with the same three-layer layout as S1 (Caesar text line · red episode-metadata numbers · Author symbol grid) and their screens stack into one Journal puzzle page · Mabel / Soos / TV / Scrapbook shorts have no credit cipher at all</p>
+      <div class="ep short"><span class="num">S2</span><div><h4>Stan's Tattoo</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #2 — flash frame: Caesar text line, red episode numbers, symbol grid.</p></div><button class="arm" data-method="caesar" data-key="3">ARM</button><span class="badge">3-LAYER</span></div>
+      <div class="ep short"><span class="num">S3</span><div><h4>Mailbox</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #3 — flash frame: Caesar text line, red episode numbers, symbol grid.</p></div><button class="arm" data-method="caesar" data-key="3">ARM</button><span class="badge">3-LAYER</span></div>
+      <div class="ep short"><span class="num">S4</span><div><h4>Lefty</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #4 — flash frame: Caesar text line, red episode numbers, symbol grid.</p></div><button class="arm" data-method="caesar" data-key="3">ARM</button><span class="badge">3-LAYER</span></div>
+      <div class="ep short"><span class="num">S5</span><div><h4>Tooth</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #5 — flash frame: Caesar text line, red episode numbers, symbol grid.</p></div><button class="arm" data-method="caesar" data-key="3">ARM</button><span class="badge">3-LAYER</span></div>
+      <div class="ep short"><span class="num">S6</span><div><h4>The Hide-Behind</h4><p class="enote"><span class="hint">⌖ Puzzle piece</span>Dipper's Guide #6 — flash frame: Caesar text line, red episode numbers, symbol grid.</p></div><button class="arm" data-method="caesar" data-key="3">ARM</button><span class="badge">3-LAYER</span></div>
       <div class="ep short"><span class="num">S7</span><div><h4>Mabel's Guide to Dating</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram here — just Mabel quizzing the bachelors.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
       <div class="ep short"><span class="num">S8</span><div><h4>Mabel's Guide to Stickers</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram — pure sticker history.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
       <div class="ep short"><span class="num">S9</span><div><h4>Mabel's Guide to Fashion</h4><p class="enote"><span class="hint">∅ No cipher</span>No end-credit cryptogram — flash makeover time, nothing to decode.</p></div><span class="nochip">No cipher needed</span><span class="badge" style="visibility:hidden">—</span></div>
@@ -1411,12 +1540,57 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
     </div>
   </div>
 </section>
+<!-- ===== SCREENSHOT FRAME VAULT ===== -->
+<section id="vault">
+  <div class="sect-head reveal">
+    <h2>The Frame Vault</h2>
+    <p class="sect-note">snap the flashed puzzle screens & end credits — they stay in this browser, nowhere else</p>
+  </div>
+  <div class="vault reveal">
+    <div class="drop" id="dropZone" role="button" tabindex="0" aria-label="Add a cipher frame screenshot">
+      <span class="d-ico" aria-hidden="true">⛶</span>
+      <span class="d-main">Catch the frame as it flashes</span>
+      <span class="d-sub">DRAG AN IMAGE HERE · CLICK TO CHOOSE · PASTE WITH ⌘/CTRL+V</span>
+      <span class="d-note">One shot holds them all: the symbol grid, the credit line, the red numbers. Never uploaded — stashed in this browser only.</span>
+      <input type="file" id="vaultFile" accept="image/*" multiple hidden>
+    </div>
+    <div class="vgrid" id="vGrid"></div>
+    <div class="vempty" id="vEmpty">
+      <p>No frames yet — the Journal waits.</p>
+      <span>SCREENSHOTS LIVE IN THIS BROWSER'S STORAGE · UNPLUGGED FROM EVERYTHING</span>
+    </div>
+    <p class="vwarn" id="vWarn" hidden></p>
+  </div>
+</section>
+
+<!-- ===== LIGHTBOX ===== -->
+<dialog id="lbDialog" aria-label="Cipher frame viewer">
+  <img id="lbImg" alt="Cipher frame, enlarged">
+  <figcaption id="lbCap"></figcaption>
+  <div class="lb-tools">
+    <button id="lbPrev" aria-label="Previous frame">← PREV</button>
+    <button id="lbClose" aria-label="Close viewer">CLOSE ✕</button>
+    <button id="lbNext" aria-label="Next frame">NEXT →</button>
+  </div>
+</dialog>
+
+<section id="phases-callout">
+  <div class="callout reveal">
+    <h3>The six Dipper's Guide screens stack into one Journal page</h3>
+    <p class="cl-body"><b>Each flash-frame puzzle piece carries three independent layers:</b> a Caesar-3 text line along the bottom edge, red episode-metadata numbers ([[EP]] i, j, k → letters of that episode's decoded credits), and the Author's block-symbol grid. Decode every short's text line and the six fragments piece together, left to right, into a hidden poem.</p>
+    <p class="cl-links">
+      <a href="https://gravityfalls.fandom.com/wiki/List_of_cryptograms/Episodes" target="_blank" rel="noopener">Cryptogram list ↗</a>
+      <a href="https://gravityfalls.fandom.com/wiki/List_of_cryptograms/Books" target="_blank" rel="noopener">Symbol alphabet keys ↗</a>
+      <a href="#vault">Your screenshots ↓</a>
+    </p>
+  </div>
+</section>
 
 <!-- ===== FOOTER ===== -->
 <footer class="reveal">
   <p class="quote" data-swap="footQuote">"TRUST THE JOURNAL. THE FOREST REMEMBERS WHAT THE MIND FORGETS."</p>
   <p class="fineprint" data-swap="footFine">
-    CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS TOOL NEVER STORES OR REVEALS DECODED SHOW CONTENT —
+    CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THE ENGINE NEVER REVEALS DECODED SHOW CONTENT — FRAMES AND KEYS YOU SAVE STAY ON THIS DEVICE.
     IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE JOURNAL IS REAL. GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER
   </p>
   <p class="fineprint copyline">
@@ -1577,7 +1751,7 @@ const THEME_TEXT = {
     phasenote:'season one, in chronological watch order — the engine arms itself, you supply the ciphertext',
     ticker:' ✦ TRUST THE FOREST ✦ THE JOURNAL IS REAL ✦ KEEP WATCHING THE CREDITS ✦ SOMETHING IS WRONG WITH GRAVITY FALLS ✦ 618 ✦ A SUMMER OF SECRETS',
     footQuote:'"TRUST THE JOURNAL. THE FOREST REMEMBERS WHAT THE MIND FORGETS."',
-    footFine:'CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS TOOL NEVER STORES OR REVEALS DECODED SHOW CONTENT — IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE JOURNAL IS REAL. GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER'
+    footFine:'CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THE ENGINE NEVER REVEALS DECODED SHOW CONTENT — FRAMES AND KEYS YOU SAVE STAY ON THIS DEVICE. IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE JOURNAL IS REAL. GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER'
   },
   s2:{
     logoTitle:'WEIRDMAGEDDON',
@@ -1589,7 +1763,7 @@ const THEME_TEXT = {
     phasenote:'season two, in chronological watch order — the engine arms itself, you supply the ciphertext',
     ticker:' ▲ WEIRDMAGEDDON IS HERE ▲ REALITY IS A HOAX ▲ BILL CIPHER REIGNS ▲ THE UNIVERSE IS A HOLOGRAM ▲ BUY GOLD ▲ TRUST NO ONE',
     footQuote:'"REALITY IS AN ILLUSION, THE UNIVERSE IS A HOLOGRAM, BUY GOLD, BYE!"',
-    footFine:'CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THIS TOOL NEVER STORES OR REVEALS DECODED SHOW CONTENT — IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE UNIVERSE IS A HOLOGRAM. BUY GOLD. BYE.<br>GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER'
+    footFine:'CIPHER ASSIGNMENTS AND WATCH-NEXT NOTES ARE <b>REFERENCE-ONLY</b>. THE ENGINE NEVER REVEALS DECODED SHOW CONTENT — FRAMES AND KEYS YOU SAVE STAY ON THIS DEVICE. IT JUST RUNS THE MATH ON WHATEVER CIPHERTEXT YOU SUMMON. <b>TRUST NO ONE.</b> THE UNIVERSE IS A HOLOGRAM. BUY GOLD. BYE.<br>GRAVITY FALLS, OREGON · FREQ 61.8 · A FAN-MADE DECODER'
   }
 };
 const $ = s => document.querySelector(s);
@@ -1868,10 +2042,183 @@ function subst(t,map,dec){ if(map.length!==26)return t;
   return t.replace(/[a-z]/gi,c=>{const i=c.toUpperCase().charCodeAt(0)-65;
     const o=dec?A26[map.indexOf(c.toUpperCase())]:map[i];
     return c<='Z'?o:o.toLowerCase();}); }
+
+/* ================= AUTHOR / BILL SYMBOL LAYERS =================
+   The show's symbol ciphers are pure substitution over a hand-drawn glyph set —
+   there is no shortcut math, only the key chart. The tool ships the 26 canonical
+   Author glyphs (plus one Bill upsidedown-triangle extra) as inline SVG strokes,
+   and the USER keys letters onto them from an official chart / their screenshots.
+   Token order below is arbitrary-but-fixed: index 0..25 ↔ the GLYPH_ART array.
+   The shipping map is A→token0 … Z→token25 and is deliberately NOT the show's
+   key — decoding only works once you key the grid yourself (long-press to fix). */
+const GLYPH_ART=[                                            /* AUTHOR set — 26 block glyphs  */
+ '<path d="M18 58V6h26v52"/><path d="M18 32h26"/><path d="M24 6L18 0h38l-6 6"/>',
+ '<path d="M20 0v64"/><rect x="12" y="24" width="16" height="16"/>',
+ '<path d="M46 6H12v52h34"/>',
+ '<path d="M14 4v56"/><rect x="16" y="26" width="12" height="12"/><path d="M38 0v20"/><path d="M38 44v20"/>',
+ '<path d="M10 10h44"/><path d="M10 32h44"/><path d="M10 54h44"/>',
+ '<path d="M28 10v44"/><ellipse cx="28" cy="32" rx="8" ry="10"/>',
+ '<path d="M16 0v64"/><path d="M34 0v64"/><path d="M52 0v64"/>',
+ '<path d="M20 8v48"/><path d="M20 8l10 10"/><path d="M20 24l10 10"/><path d="M20 40l8 8"/>',
+ '<path d="M46 6H16v26h30v26H16"/>',
+ '<path d="M28 6v52"/><path d="M12 20h32"/>',
+ '<path d="M10 16h40"/><path d="M10 32h40"/><path d="M10 48h40"/><path d="M20 16v32"/>',
+ '<path d="M46 6H14v22h20"/><path d="M14 28v30"/>',
+ '<path d="M14 6h24v24H14z"/><path d="M26 30v26z"/><path d="M26 30v26"/>',
+ '<path d="M8 54V22l20-14 20 14v32"/>',
+ '<path d="M28 20l14-14 14 14-14 14z"/><path d="M28 20v38"/>',
+ '<path d="M12 6h34v26H12z"/>',
+ '<path d="M20 4v56"/><path d="M6 32h28"/>',
+ '<path d="M44 6v36"/><circle cx="44" cy="50" r="8"/>',
+ '<circle cx="28" cy="32" r="24"/><path d="M28 14v36"/>',
+ '<path d="M50 16C42 4 14 4 14 18s4 12 16 16 16 10 16 16-22 14-36 0"/>',
+ '<path d="M14 6v52"/><path d="M14 6l30 52V6"/>',
+ '<path d="M8 6l18 44h4L48 6"/>',
+ '<path d="M8 6l14 44h2l4-12 4 12h2L48 6"/>',
+ '<path d="M10 10l18 22 18-22"/><path d="M28 32v26"/>',
+ '<path d="M8 10h40L8 54h40"/>',
+ '<ellipse cx="28" cy="32" rx="7" ry="30"/>'
+];
+const BILL_ART_DEF='<path d="M28 4 L52 56 L4 56 Z"/><path class="fillstrokeofill" d="M28 31l0.1 0z"/>';   /* ▲ + central eye-dot (Bill's tie-in) */
+const GLYPH_LETTERS=A26.split('');                                     /* grid rows: A..Z     */
+const AUTHOR_TOKENS=GLYPH_LETTERS.map((_,i)=>'_a'+i+'_');              /* tokens 0..25        */
+const BILL_TOKENS=['_b0_'];                                            /* Bill extra          */
+const AUTHOR_ART=[...GLYPH_ART,...[BILL_ART_DEF]];
+const AUTHOR_NAME_MAP={};
+const GLYPH_TOKENS_ALL=[...AUTHOR_TOKENS,...BILL_TOKENS];
+GLYPH_LETTERS.forEach((L,i)=>AUTHOR_NAME_MAP[AUTHOR_TOKENS[i]]=AUTHOR_TOKENS[i]);
+AUTHOR_NAME_MAP[BILL_TOKENS[0]]=BILL_TOKENS[0];
+
+const LS_KEY='gf-cipher-tool-v1';
+let glyphMap={}, customMaps={}, epStore={};
+function glyphSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({gmap:glyphMap,cmaps:customMaps,ep:epStore})); }catch(e){} }
+(function glyphLoad(){ try{ const s=JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+  glyphMap=s.gmap||{}; customMaps=s.cmaps||{}; epStore=s.ep||{};
+}catch(e){} })();
+
+function glyphSVG(d,cls){ return `<svg class="${cls||''}" viewBox="0 0 56 64" aria-hidden="true">${d}</svg>`; }
+
+/* live subst tokenizer: underscores and digit runs hold together so _a0_ and
+   _b0_ never get eaten by the map's letter swap */
+function substTokensSubst(t,map,dec){
+  const parts=t.split(/(_)/);           /* split on '_' kept as its own parts */
+  let out='',carry='';
+  for(const p of parts){
+    carry+=p;
+    if(p==='_'){
+      if(carry.length>1 && /_[ab]\d+_$/.test(carry)){ out+=carry; carry=''; continue; }
+      /* complete token? decode: replace with mapped letter; encode: already emitted tokens pass through */
+      continue;
+    }
+    if(carry){
+      out+=applySubstRun(carry,map,dec); carry='';
+    }
+  }
+  if(carry) out+=applySubstRun(carry,map,dec);
+  return out;
+}
+function applySubstRun(s,map,dec){ if(map.length!==26)return s;
+  return s.replace(/[a-z]/gi,c=>{const i=c.toUpperCase().charCodeAt(0)-65;
+    const o=dec?A26[map.indexOf(c.toUpperCase())]:map[i];
+    return c<='Z'?o:o.toLowerCase();}); }
+
+/* AUTHOR-set substitution driven by the user-keyed glyphMap.
+   EN crypt: letter -> token string.  DEcrypt: token string -> letter via reverse map. */
+function authorGlyphMap(dec){
+  /* build full keyed alphabet: prefer user bindings; unbound letters fall back to their slot token */
+  const m={};
+  for(let i=0;i<26;i++){
+    const L=GLYPH_LETTERS[i];
+    const userTok=glyphMap[L];                        /* e.g. '_a9_' or '_b0_' */
+    m[L]=userTok||AUTHOR_TOKENS[i];
+  }
+  return dec?invertMap(m):m;
+}
+function invertMap(m){ const r={}; for(const k in m) r[m[k]]=k; return r; }
+function substAuthor(t,dec){
+  if(!dec){
+    const map=authorGlyphMap(false);
+    return [...t].map(c=>{
+      if(!/[A-Za-z]/.test(c)) return c;
+      const L=c.toUpperCase();
+      const tok=map[L]||AUTHOR_TOKENS[GLYPH_LETTERS.indexOf(L)];
+      return c<='Z'?tok:tok.toLowerCase();
+    }).join('');
+  }
+  /* decrypt: greedy longest-token match, case-insensitive */
+  const map=authorGlyphMap(true), keys=Object.keys(map).sort((a,b)=>b.length-a.length);
+  let out='',i=0,s=t;
+  while(i<s.length){
+    let hit='';
+    for(const k of keys){ if(s.slice(i,i+k.length).toUpperCase()===k.toUpperCase()){ hit=k; break; } }
+    if(hit){ out+=map[hit]; i+=hit.length; continue; }
+    out+=s[i]; i++;
+  }
+  return out;
+}
+
+/* ================= EPISODE METADATA KEY ([[EP]] i, j, k) ================= */
+/* The red numbers on flash-frame puzzle pieces index into a season-1 episode's
+   DECODED end-credit message. The engine ships only episode titles/season; the
+   decoded strings are YOURS to type in (or leave blank until you crack them). */
+const EP_DEFAULTS=[
+  ['01','Tourist Trapped'],['02','The Legend of the Gobblewonker'],['03','Headhunters'],
+  ['04','The Hand That Rocks the Mabel'],['05','The Inconveniencing'],['06','Dipper vs. Manliness'],
+  ['07','Double Dipper'],['08','Irrational Treasure'],['09',"The Time Traveler's Pig"],
+  ['10','Fight Fighters'],['11','Little Dipper'],['12','Summerween'],['13','Boss Mabel'],
+  ['14','Bottomless Pit!'],['15','The Deep End'],['16','Carpet Diem'],['17','Boyz Crazy'],
+  ['18','Land Before Swine'],['19','Dreamscaperers'],['20','Gideon Rises']
+];
+function epEntry(n){ if(!epStore[n]) epStore[n]=null; return EP_DEFAULTS.find(e=>e[0]===n); }
+function substEpMeta(t){
+  /* decrypt path only: parse [[EP]] i, j, k groups; anything else passes through */
+  const groups=[...t.matchAll(/\[\[(\d{1,2})\]\]\s*([\d\s,·.]+)\]?/g)];
+  if(!groups.length) return t;
+  return groups.map(g=>{
+    const [,ep, nums]=g;
+    const msg=(epStore[ep]||'').replace(/[^A-Za-z]/g,'').toUpperCase();
+    const idxs=nums.replace(/\./g,'·').split(/·+/).map(w=>w.trim()).filter(Boolean);
+    const words=idxs.map(word=>{
+      const letter=[...word.matchAll(/\d+/g)].map(m=>{
+        const i=+m[0]-1;
+        return (i>=0&&i<msg.length)?msg[i]:'·';
+      }).join('');
+      return letter;
+    });
+    return words.join(' ');
+  }).join(' · ').toLowerCase();
+}
+
+/* ================= VAULT IMAGE PIPE =================
+   Downscale > 1600px screenshots to JPEG so localStorage stays within quota;
+   images stay ENTIRELY as data URLs (offline, no fetch). */
+function imageMake(file,cb){
+  const rd=new FileReader();
+  rd.onload=()=>{
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.naturalWidth, h=img.naturalHeight;
+      const MAX=1600;                       /* generous: text/number plate stays readable */
+      if(Math.max(w,h)>MAX){ const s=MAX/Math.max(w,h); w=(w*s)|0; h=(h*s)|0; }
+      try{
+        const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        cb(null, cv.toDataURL('image/jpeg',.82));
+      }catch(e){ cb(null, rd.result); }     /* fallback: original data url if canvas balks */
+    };
+    img.onerror=()=>cb(new Error('Not an image'));
+    img.src=rd.result;
+  };
+  rd.onerror=()=>cb(rd.error);
+  rd.readAsDataURL(file);
+}
+
 function applyCipher(t,m,key,dec){
   switch(m){ case 'caesar':return caesar(t,parseInt(key)||3,dec);
     case 'atbash':return atbash(t); case 'a1z26':return a1z26(t,dec);
-    case 'vigenere':return vigenere(t,key,dec); case 'subst':return subst(t,normMap(key),dec);} return t; }
+    case 'vigenere':return vigenere(t,key,dec); case 'subst':return subst(t,normMap(key),dec);
+    case 'author':return substAuthor(t,dec);
+    case 'epmeta':return substEpMeta(t); } return t; }
 
 /* ================= ENGINE STATE / UI ================= */
 let method='caesar', mode='decrypt';
@@ -1880,6 +2227,8 @@ const inT=$('#inText'), outT=$('#outText');
 function setMethod(m){ method=m;
   $$('.method').forEach(b=>b.classList.toggle('active',b.dataset.method===m));
   $$('.keyarea').forEach(k=>k.classList.toggle('show',k.dataset.key===m));
+  if(m==='author') buildGlyphGrid();
+  if(m==='epmeta') buildEpSelect();
   run(); }
 function setMode(m){ mode=m;
   $('#modeEnc').classList.toggle('active',m==='encrypt');
@@ -1913,36 +2262,42 @@ function chainSteps(){ return [...$('#chainSteps').children].map(r=>({
   m:r.querySelector('select').value, k:r.querySelector('input').value })); }
 
 function statusText(){
-  const M=mode.toUpperCase();
-  if(method==='chain') return `ENGINE ARMED ▸ CHAIN ▸ ${chainSteps().length} LAYERS · ${M}`;
-  const info={
-    caesar:`SHIFT ${parseInt($('#caesarShift').value)||0}`,
-    atbash:'MIRROR', a1z26:'1–26',
-    vigenere:`KEY "${$('#vigKey').value.trim()||'—'}"`,
-    subst:normMap($('#substMap').value).length===26?'MAP LOCKED':'MAP INCOMPLETE'
-  }[method];
-  return `ENGINE ARMED ▸ ${method.toUpperCase()} ▸ ${info} · ${M}`; }
+    const M=mode.toUpperCase();
+    if(method==='chain') return `ENGINE ARMED ▸ CHAIN ▸ ${chainSteps().length} LAYERS · ${M}`;
+    const info={
+      caesar:`SHIFT ${parseInt($('#caesarShift').value)||0}`,
+      atbash:'MIRROR', a1z26:'1–26',
+      vigenere:`KEY "${$('#vigKey').value.trim()||'—'}"`,
+      subst:normMap($('#substMap').value).length===26?'MAP LOCKED':'MAP INCOMPLETE',
+      author:(()=>{const n=Object.keys(glyphMap).filter(k=>glyphMap[k]).length;return n?`${n}/26 GLYPHS KEYED`:'KEY GRID EMPTY';})(),
+      epmeta:(()=>{const e=$('#epEp');return e.value?`EP ${e.value} · ${(epStore[e.value]||'EMPTY').length?'STORED':'AWAITING YOUR MSG'}`:'IDLE';})()
+    }[method];
+    return `ENGINE ARMED ▸ ${method.toUpperCase()} ▸ ${info} · ${M}`; }
 
-function run(){
-  const dec = mode==='decrypt';
-  let out='';
-  if(method==='chain'){
-    const steps=chainSteps(), order=dec?[...steps].reverse():steps;
-    out=order.reduce((t,s)=>applyCipher(t,s.m,s.k,dec), inT.value);
-  } else {
-    const key={caesar:$('#caesarShift').value, vigenere:$('#vigKey').value, subst:$('#substMap').value}[method]||'';
-    out=applyCipher(inT.value,method,key,dec);
+  function run(){
+    const dec = mode==='decrypt';
+    let out='';
+    if(method==='chain'){
+      const steps=chainSteps(), order=dec?[...steps].reverse():steps;
+      out=order.reduce((t,s)=>applyCipher(t,s.m,s.k,dec), inT.value);
+    } else {
+      const key={caesar:$('#caesarShift').value, vigenere:$('#vigKey').value, subst:$('#substMap').value, epmeta:$('#epIdx').value}[method]||'';
+      out=applyCipher(inT.value,method,key,dec);
+    }
+    outT.value=out;
+    $('#inCount').textContent=inT.value.length+' CHARS';
+    $('#outCount').textContent=out.length+' CHARS';
+    $('#statusText').textContent=statusText();
+    const map=normMap($('#substMap').value), hint=$('#substHint');
+    hint.textContent = map.length===26 ? '26/26 UNIQUE · MAP LOCKED ✓' : `${map.length}/26 UNIQUE · NEEDS 26 DISTINCT LETTERS`;
+    hint.classList.toggle('ok', map.length===26);
+    if(method==='author') glyphRefreshCount();
+    if(method==='epmeta') epRefreshHint();
   }
-  outT.value=out;
-  $('#inCount').textContent=inT.value.length+' CHARS';
-  $('#outCount').textContent=out.length+' CHARS';
-  $('#statusText').textContent=statusText();
-  const map=normMap($('#substMap').value), hint=$('#substHint');
-  hint.textContent = map.length===26 ? '26/26 UNIQUE · MAP LOCKED ✓' : `${map.length}/26 UNIQUE · NEEDS 26 DISTINCT LETTERS`;
-  hint.classList.toggle('ok', map.length===26);
-}
-[inT,$('#caesarShift'),$('#vigKey'),$('#substMap')].forEach(el=>el.addEventListener('input',()=>{
-  run(); const box=$('#outBox'); box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash'); }));
+  [inT,$('#caesarShift'),$('#vigKey'),$('#substMap'),$('#epIdx')].forEach(el=>el.addEventListener('input',()=>{
+    run(); const box=$('#outBox'); box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash');
+    if(el===$('#epIdx')) epRefreshHint();
+  }));
 
 /* actions */
 async function copyText(txt,btn){
@@ -1968,9 +2323,179 @@ $$('.arm').forEach(b=>b.addEventListener('click',()=>{
     if(b.dataset.method==='vigenere') $('#vigKey').value=b.dataset.key;
   }
   if(b.dataset.method==='subst') $('#substMap').focus();
+  if(b.dataset.method==='epmeta'){ buildEpSelect(); $('#epIdx').focus(); }
+  if(b.dataset.method==='author'){ buildGlyphGrid(); }
   setMode('decrypt');
   document.getElementById('tool').scrollIntoView({behavior:'smooth'});
   const st=$('#statusBox'); st.classList.remove('pulse'); void st.offsetWidth; st.classList.add('pulse'); }));
+
+/* ================= AUTHOR GLYPH GRID UI ================= */
+/* Builds the 26-cell letter↔glyph key grid once per season of focus. Clicking a
+   cell keys THAT letter to the glyph shown; long-press / right-click un-keys it.
+   The Bill extra glyph gets a 27th cell labeled "▲" (key it to any letter you like). */
+let gGridBuilt=false;
+function glyphRefreshCount(){
+  const n=Object.values(glyphMap).filter(Boolean).length;
+  const el=$('#gMapCount'); if(el) el.textContent=`${n} / 26 GLYPHS KEYED`;
+  const btn=$('#gMapClear'); if(btn) btn.classList.toggle('dirty', n>0);
+}
+function buildGlyphGrid(){
+  if(gGridBuilt){ glyphRefreshCount(); return; }
+  gGridBuilt=true;
+  const host=$('#gKey'); if(!host) return;
+  host.innerHTML='';
+  GLYPH_LETTERS.forEach((L,i)=>{
+    const cell=document.createElement('button');
+    cell.type='button'; cell.className='gcell'; cell.dataset.letter=L;
+    cell.title=`${L} — tap to step glyph → · shift-tap to step back · long-press/right-click to forget`;
+    cell.innerHTML=`<span>${L}</span>${glyphSVG(GLYPH_ART[i])}`;
+    cell.addEventListener('click',e=>cycleGlyph(L, e.shiftKey?-1:+1));
+    cell.addEventListener('contextmenu',e=>{e.preventDefault(); unkeyGlyph(L, cell);});
+    let pressT; cell.addEventListener('pointerdown',()=>{ pressT=setTimeout(()=>unkeyGlyph(L,cell),600); });
+    ['pointerup','pointerleave','pointercancel'].forEach(ev=>cell.addEventListener(ev,()=>clearTimeout(pressT)));
+    host.appendChild(cell);
+  });
+  /* Bill tie-in cell */
+  const bc=document.createElement('button');
+  bc.type='button'; bc.className='gcell'; bc.dataset.letter='BILL';
+  bc.title="Bill's extra glyph — key it by stepping any letter until ▲ appears";
+  bc.innerHTML=`<span>▲</span>${glyphSVG(BILL_ART_DEF,'billg')}`;
+  host.appendChild(bc);
+  $('#gMapClear').onclick=()=>{ glyphMap={}; glyphSave(); paintGlyphGrid(); glyphRefreshCount(); run(); };
+  paintGlyphGrid(); glyphRefreshCount();
+}
+function paintGlyphGrid(){
+  const host=$('#gKey'); if(!host) return;
+  [...host.children].forEach(c=>{
+    const L=c.dataset.letter; if(L==='BILL'){ c.classList.remove('bound'); return; }
+    const i=GLYPH_LETTERS.indexOf(L), tok=glyphMap[L];
+    c.querySelector('svg').outerHTML = glyphArt(tok||AUTHOR_TOKENS[i]);
+    c.classList.toggle('bound', !!tok);
+  });
+}
+function glyphArt(tok){
+  if(tok===BILL_TOKENS[0]) return glyphSVG(BILL_ART_DEF,'billg');
+  const i=AUTHOR_TOKENS.indexOf(tok); return glyphSVG(GLYPH_ART[Math.max(0,i)]);
+}
+function cycleGlyph(L, dir){                                                                          /* dir:+1 fwd, -1 back  */
+  const cur=glyphMap[L];                              /* undefined = unkeyed  */
+  const i=cur?GLYPH_TOKENS_ALL.indexOf(cur):-1;
+  if(i===-1){                                         /* unkeyed -> first/last*/
+    glyphMap[L] = dir>0 ? GLYPH_TOKENS_ALL[0] : GLYPH_TOKENS_ALL[GLYPH_TOKENS_ALL.length-1];
+  } else if(i+dir<0 || i+dir>=GLYPH_TOKENS_ALL.length){
+    delete glyphMap[L];                               /* wrapped off the end -> unkey */
+  } else glyphMap[L]=GLYPH_TOKENS_ALL[i+dir];
+  glyphSave(); paintGlyphGrid(); glyphRefreshCount(); run();
+}
+function unkeyGlyph(L, cell){ if(glyphMap[L]){ delete glyphMap[L]; glyphSave(); paintGlyphGrid(); glyphRefreshCount(); run(); } }
+
+/* ================= EPISODE SELECT UI ================= */
+let epSelBuilt=false;
+function buildEpSelect(){
+  const sel=$('#epEp'); if(!sel) return;
+  if(!epSelBuilt){
+    EP_DEFAULTS.forEach(([n,t])=>{
+      const o=document.createElement('option'); o.value=n; o.textContent=`E${n} — ${t}`; sel.appendChild(o);
+    });
+    sel.value='13'; epSelBuilt=true;
+    sel.addEventListener('change',()=>{ epRefreshMsg(); run(); });
+    $('#epIdx').placeholder='positions — e.g. 8, 9, 10 · 14, 17, 22';
+    /* decoded message store field, injected under the positions input */
+    const wrap=document.createElement('input');
+    wrap.type='text'; wrap.id='epMsg'; wrap.spellcheck=false;
+    wrap.placeholder='decoded credits for that episode (letters only; you supply — try the Wiki)';
+    sel.insertAdjacentElement('afterend',wrap);
+    wrap.addEventListener('input',()=>{ epStore[sel.value]=wrap.value.toUpperCase().replace(/[^A-Z]/g,''); glyphSave(); run(); });
+  }
+  epRefreshMsg(); epRefreshHint();
+}
+function epRefreshMsg(){ const sel=$('#epEp'), msg=$('#epMsg'); if(!sel||!msg) return; msg.value=epStore[sel.value]||''; }
+function epRefreshHint(){
+  const ki=$('#epIdx'); if(!ki) return;
+  const sel=$('#epEp').value, msg=(epStore[sel]||'').toUpperCase();
+  const nums=[...ki.value.matchAll(/\d+/g)].map(m=>+m[0]);
+  const hinted=nums.map(i=> (i>=1&&i<=msg.length)? msg[i-1] : '·').join(' ');
+  ki.title=msg?`LIVE PEEK → ${hinted}`:'Type the decoded credits for this episode above to preview the letters.';
+}
+
+/* ================= VAULT / LIGHTBOX ================= */
+const vault=(function(){
+  const LS='gf-frames-v1';
+  let frames=[]; let lightIx=0;
+  function load(){ try{ frames=JSON.parse(localStorage.getItem(LS)||'[]'); }catch(e){ frames=[]; } }
+  function save(){ try{
+      localStorage.setItem(LS, JSON.stringify(frames));
+    }catch(e){
+      /* quota: drop oldest until it fits */
+      while(frames.length && e){ frames.shift(); try{ localStorage.setItem(LS,JSON.stringify(frames)); e=null; }catch(x){ e=x; } }
+      if(!frames.length) flashWarn('STORAGE FULL — CLEAR OLDER FRAMES');
+    } render(); }
+  function flashWarn(msg){ const w=$('#vWarn'); if(!w) return; w.textContent=msg; w.hidden=false; setTimeout(()=>w.hidden=true,3500); }
+  function add(dataUrl,label){
+    const f={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), src:dataUrl, cap:label||('FRAME '+new Date().toLocaleDateString())};
+    frames.push(f); save();
+  }
+  function render(){
+    const g=$('#vGrid'), e=$('#vEmpty'); if(!g) return;
+    g.innerHTML='';
+    if(e) e.style.display=frames.length?'none':'block';
+    frames.forEach((f,i)=>{
+      const card=document.createElement('figure'); card.className='vcard';
+      const img=document.createElement('img'); img.src=f.src; img.alt=f.cap; img.decoding='async';
+      const cap=document.createElement('figcaption'); cap.className='vcap';
+      cap.innerHTML=`<span></span><i>#${i+1}</i>`; cap.querySelector('span').textContent=f.cap;
+      const rm=document.createElement('button'); rm.className='vrm'; rm.setAttribute('aria-label','Forget frame'); rm.textContent='✕';
+      rm.addEventListener('click',ev=>{ev.stopPropagation(); frames.splice(i,1); save();});
+      card.append(img,cap,rm);
+      card.addEventListener('click',()=>openLb(i));
+      g.appendChild(card);
+    });
+  }
+  /* drag & drop */
+  function bindDrop(){
+    const dz=$('#dropZone'), fi=$('#vaultFile'); if(!dz) return;
+    ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault(); dz.classList.add('hot');}));
+    ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault(); dz.classList.remove('hot');}));
+    dz.addEventListener('drop',e=>{
+      const files=[...(e.dataTransfer?.files||[])].filter(f=>f.type.startsWith('image/'));
+      if(!files.length){ dz.classList.add('deny'); setTimeout(()=>dz.classList.remove('deny'),900); return; }
+      files.forEach(f=>imageMake(f,(err,url)=>{ if(err){flashWarn('THAT FILE WASN\'T AN IMAGE');return;} add(url, f.name.replace(/\.[^.]+$/,'').toUpperCase()); }));
+    });
+    dz.addEventListener('click',()=>fi.click());
+    dz.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault(); fi.click();} });
+    fi.addEventListener('change',()=>{ [...fi.files].forEach(f=>imageMake(f,(err,url)=>{ if(!err) add(url, f.name.replace(/\.[^.]+$/,'').toUpperCase()); })); fi.value=''; });
+  }
+  /* paste anywhere in the doc (also feeds #inText if it's not an image) */
+  function bindPaste(){
+    document.addEventListener('paste',e=>{
+      const items=[...(e.clipboardData?.items||[])];
+      const img=items.find(i=>i.type.startsWith('image/'));
+      if(img){ e.preventDefault(); const file=img.getAsFile(); imageMake(file,(err,url)=>{ if(!err) add(url,'PASTED FRAME'); }); return; }
+      /* plain-text paste into #inText leaves its normal handler alone (already wired by engine) */
+    });
+  }
+  /* lightbox */
+  function openLb(i){ lightIx=i; const d=$('#lbDialog'); if(!d) return;
+    $('#lbImg').src=frames[i].src; $('#lbCap').textContent=frames[i].cap;
+    if(typeof d.showModal==='function'){ d.showModal(); } else d.setAttribute('open','');
+    d.classList.add('open');
+  }
+  function closeLb(){ const d=$('#lbDialog'); if(!d) return; d.classList.remove('open'); if(d.close) d.close(); else d.removeAttribute('open'); }
+  function stepLb(dir){ if(!frames.length) return; lightIx=(lightIx+dir+frames.length)%frames.length;
+    $('#lbImg').src=frames[lightIx].src; $('#lbCap').textContent=frames[lightIx].cap; }
+  function bindLb(){
+    const d=$('#lbDialog'); if(!d) return;
+    $('#lbClose').onclick=closeLb; $('#lbPrev').onclick=()=>stepLb(-1); $('#lbNext').onclick=()=>stepLb(1);
+    d.addEventListener('click',e=>{ if(e.target===d) closeLb(); });
+    document.addEventListener('keydown',e=>{ if(!d.classList.contains('open')) return;
+      if(e.key==='Escape') closeLb(); if(e.key==='ArrowLeft') stepLb(-1); if(e.key==='ArrowRight') stepLb(1); });
+  }
+  return { boot(){ load(); render(); bindDrop(); bindPaste(); bindLb(); } };
+})();
+vault.boot();
+
+/* vault drop + author glyph grid also want their inputs heard */
+['#epEp','#epIdx','#epMsg'].forEach(id=>{ const el=$(id); if(el&&el.addEventListener) el.addEventListener('change',()=>{ if(method==='epmeta'){ run(); const box=$('#outBox'); box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash'); } }); });
 
 /* scroll reveals */
 /* Reveal observer: observe all .reveal elements. The IntersectionObserver
