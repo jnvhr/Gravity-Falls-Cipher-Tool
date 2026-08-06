@@ -664,6 +664,10 @@ h2::before{content:'▲ ';font-size:.6em;vertical-align:.25em;color:var(--muted)
 .keypanel input:focus,.step select:focus,.step input:focus{border-color:var(--accent)}
 .keyhint{margin-top:.65rem;font-size:.62rem;letter-spacing:.12em;color:var(--muted);line-height:1.7}
 .keyhint.ok{color:var(--accent)}
+.ep-ledger{margin-top:.9rem;padding-top:.75rem;border-top:1px dashed var(--line)}
+.ep-ledger .keybar{margin-top:0}
+.ep-ledger textarea{width:100%;min-height:4.5rem;resize:vertical;background:rgba(255,255,255,.12);border:1px solid var(--line-strong);border-radius:var(--rad);padding:.65rem;color:var(--ink);font:inherit;font-size:.7rem;line-height:1.6}
+.ep-ledger textarea:focus{border-color:var(--accent);outline:none}
 .keyarea{display:none}.keyarea.show{display:block;animation:fadeUp .35s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
@@ -1420,6 +1424,10 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
           <select id="epEp"></select>
           <input type="text" id="epIdx" placeholder="positions — e.g. 8, 9, 10 · 14, 17, 22" spellcheck="false">
           <p class="keyhint">The number by the screen picks the episode; the red numbers read that many letters off its decoded credits — "[[EP]] 8, 9, 10" pulls those letters in order. Add "·" to start a new word.</p>
+          <div class="ep-ledger">
+            <div class="keybar"><span>STORED EXTRACTIONS</span><button id="epLedgerClear" type="button">CLEAR LEDGER</button></div>
+            <textarea id="epLedger" readonly spellcheck="false" placeholder="Your extracted pieces will collect here with spacing preserved."></textarea>
+          </div>
         </div>
         <div class="keyarea" data-key="author">
           <h5>THE AUTHOR'S SYMBOL ALPHABET</h5>
@@ -2211,10 +2219,10 @@ const AUTHOR_NAME_MAP={};
 const GLYPH_TOKENS_ALL=AUTHOR_TOKENS;
 GLYPH_LETTERS.forEach((L,i)=>AUTHOR_NAME_MAP[AUTHOR_TOKENS[i]]=AUTHOR_TOKENS[i]);
 const LS_KEY='gf-cipher-tool-v2';  /* bumped: old v1 glyphMap pointed at placeholder glyphs */
-let glyphMap={}, customMaps={}, epStore={};
-function glyphSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({gmap:glyphMap,cmaps:customMaps,ep:epStore})); }catch(e){} }
+let glyphMap={}, customMaps={}, epStore={}, epIdxStore={}, epOrder=[];
+function glyphSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({gmap:glyphMap,cmaps:customMaps,ep:epStore,epi:epIdxStore,epo:epOrder})); }catch(e){} }
 (function glyphLoad(){ try{ const s=JSON.parse(localStorage.getItem(LS_KEY)||'{}');
-  glyphMap=s.gmap||{}; customMaps=s.cmaps||{}; epStore=s.ep||{};
+  glyphMap=s.gmap||{}; customMaps=s.cmaps||{}; epStore=s.ep||{}; epIdxStore=s.epi||{}; epOrder=s.epo||[];
 }catch(e){} })();
 
 /* Author set uses traced-wiki filled outlines (class gfill); Bill set uses
@@ -2366,6 +2374,16 @@ function epMetaResolve(ep, nums){
   });
   return words.join(' ').toLowerCase();
 }
+function epRememberOrder(ep){
+  if(ep && epIdxStore[ep] && epIdxStore[ep].trim() && !epOrder.includes(ep)) epOrder.push(ep);
+}
+function epLedgerText(){
+  return epOrder.map(ep=>epMetaResolve(ep,epIdxStore[ep]||'')).filter(Boolean).join(' ')
+    .replace(/\s+/g,' ').trim();
+}
+function epRefreshLedger(){
+  const el=$('#epLedger'); if(el) el.value=epLedgerText();
+}
 function substEpMeta(t){
   /* decrypt path only. Two input modes:
      1) [[EP]] i,j,k syntax pasted directly in the input textarea (legacy)
@@ -2499,6 +2517,11 @@ function statusText(){
     if(method==='epmeta') epRefreshHint();
   }
   [inT,$('#caesarShift'),$('#vigKey'),$('#substMap'),$('#epIdx'),$('#epEp')].forEach(el=>el.addEventListener('input',()=>{
+    if(el===$('#epIdx') && $('#epEp').value){
+      epIdxStore[$('#epEp').value]=el.value;
+      epRememberOrder($('#epEp').value);
+      glyphSave();
+    }
     run(); const box=$('#outBox'); box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash');
     if(el===$('#epIdx')) epRefreshHint();
   }));
@@ -2628,7 +2651,7 @@ function buildEpSelect(){
       const o=document.createElement('option'); o.value=n; o.textContent=`E${n} — ${t}`; sel.appendChild(o);
     });
     sel.value='13'; epSelBuilt=true;
-    sel.addEventListener('change',()=>{ epRefreshMsg(); run(); });
+    sel.addEventListener('change',()=>{ epRefreshMsg(); epRefreshIdx(); epRefreshHint(); run(); });
     $('#epIdx').placeholder='positions — e.g. 8, 9, 10 · 14, 17, 22';
     /* decoded message store field, injected under the positions input */
     const wrap=document.createElement('input');
@@ -2636,16 +2659,19 @@ function buildEpSelect(){
     wrap.placeholder='decoded credits for that episode (letters only; you supply — try the Wiki)';
     sel.insertAdjacentElement('afterend',wrap);
     wrap.addEventListener('input',()=>{ epStore[sel.value]=wrap.value.toUpperCase().replace(/[^A-Z]/g,''); glyphSave(); run(); });
+    $('#epLedgerClear').addEventListener('click',()=>{ epIdxStore={}; epOrder=[]; glyphSave(); epRefreshIdx(); epRefreshLedger(); epRefreshHint(); run(); });
   }
-  epRefreshMsg(); epRefreshHint();
+  epRefreshMsg(); epRefreshIdx(); epRefreshLedger(); epRefreshHint();
 }
 function epRefreshMsg(){ const sel=$('#epEp'), msg=$('#epMsg'); if(!sel||!msg) return; msg.value=epStore[sel.value]||''; }
+function epRefreshIdx(){ const sel=$('#epEp'), idx=$('#epIdx'); if(!sel||!idx) return; idx.value=epIdxStore[sel.value]||''; }
 function epRefreshHint(){
   const ki=$('#epIdx'); if(!ki) return;
   const sel=$('#epEp').value, msg=(epStore[sel]||'').toUpperCase();
   const nums=[...ki.value.matchAll(/\d+/g)].map(m=>+m[0]);
   const hinted=nums.map(i=> (i>=1&&i<=msg.length)? msg[i-1] : '·').join(' ');
   ki.title=msg?`LIVE PEEK → ${hinted}`:'Type the decoded credits for this episode above to preview the letters.';
+  epRefreshLedger();
 }
 
 /* ================= VAULT / LIGHTBOX ================= */
