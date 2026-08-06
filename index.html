@@ -707,6 +707,8 @@ textarea::placeholder{color:var(--muted);opacity:.65}
 .glyphview[hidden]{display:none}
 .glyphview .gv{display:inline-flex}
 .glyphview .gv svg{width:22px;height:25px;color:var(--outink)}
+.glyphview .gv svg.billg *{fill:none !important;stroke:currentColor !important;stroke-width:5;stroke-linecap:square;stroke-linejoin:miter}
+.glyphview .gv svg.billg circle{fill:currentColor !important;stroke:none !important}
 .glyphview .gv.sp{width:.55em}
 .glyphview .gv.lit{font:600 .78rem 'IBM Plex Mono',monospace;color:var(--outink);opacity:.7;letter-spacing:.05em}
 
@@ -795,6 +797,11 @@ body[data-theme="s1"] .col-s1 .hint{color:#7a5216;font-weight:600;
 .gcell svg{width:26px;height:26px;color:currentColor}
 .gcell svg.billg{width:30px;height:30px}
 .gcell svg.billg *{fill:none !important;stroke:currentColor !important;stroke-width:6.5;stroke-linecap:square;stroke-linejoin:miter}
+.gcell svg.billg circle{fill:currentColor !important;stroke:none !important}
+/* The wiki's Bill glyph files are black transparent PNGs. In the dark season
+   theme, invert only those raster elements so their exact shapes remain legible. */
+body[data-theme="s2"] .gcell svg.billg image,
+body[data-theme="s2"] .glyphview svg.billg image{filter:invert(1)}
 .gcell svg .fillstrokeofill{stroke:currentColor !important;fill:currentColor !important;stroke-width:1}
 /* Traced Author glyphs are FILLED solid outlines (potrace ink) — strokes would ruin them */
 .gcell svg.gfill *{fill:currentColor !important;stroke:none !important}
@@ -872,11 +879,11 @@ body[data-theme="s1"] .vcard .vcap{color:#e8c37c}
 .callout>div{max-width:100%;border:1px solid var(--line);border-radius:var(--rad);
   background:var(--panel);color:var(--panel-ink);padding:1.5rem 1.6rem;
   outline:1px dashed var(--stitch);outline-offset:-6px;box-shadow:var(--shadow)}
-.callout h3{font-family:'Rye',cursive;font-weight:400;font-size:1.12rem;letter-spacing:.03em;color:var(--accent);margin-bottom:.45rem}
-.callout .cl-body{font-family:'Caveat',cursive;font-size:1.14rem;line-height:1.4;color:var(--muted);max-width:76ch}
+.callout h3{font-family:'Rye',cursive;font-weight:400;font-size:1.12rem;letter-spacing:.03em;color:var(--accent);margin:0 auto .45rem;text-align:center}
+.callout .cl-body{font-family:'Caveat',cursive;font-size:1.14rem;line-height:1.4;color:var(--muted);max-width:none;margin:0 auto;text-align:center}
 .callout .cl-body b{color:var(--accent2)}
 body[data-theme="s1"] .callout .cl-body b{color:#7a5216}
-.callout .cl-links{display:flex;flex-wrap:wrap;gap:1.4rem;margin-top:.8rem}
+.callout .cl-links{display:flex;justify-content:center;flex-wrap:wrap;gap:1.4rem;margin-top:.8rem}
 .callout .cl-links a{font-size:.58rem;font-weight:700;letter-spacing:.22em;color:var(--accent);
   text-decoration:none;border-bottom:1px dashed var(--line-strong);padding-bottom:.2em;transition:color .2s,border-color .2s}
 .callout .cl-links a:hover{color:var(--accent2);border-color:var(--accent)}
@@ -1370,6 +1377,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
       <p class="rail-label">SPECIAL KEYS</p>
       <button class="method" data-method="epmeta"><span class="mname">EPISODE KEY</span><span class="midx">[[EP]] i,j,k</span></button>
       <button class="method" data-method="author"><span class="mname">AUTHOR SYMBOLS</span><span class="midx">GLYPH KEY</span></button>
+      <button class="method" data-method="bill"><span class="mname">BILL SYMBOLS</span><span class="midx">WIKI KEY</span></button>
 
       <p class="rail-label">DIRECTION</p>
       <div class="mode">
@@ -1418,6 +1426,11 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
           <div class="keybar"><span id="gMapCount">0 / 26 GLYPHS KEYED</span><button id="gMapClear">FORGET ALL</button></div>
           <div class="gkey" id="gKey"></div>
           <p class="keyhint">Tap a letter to cycle its glyph (shift-tap steps back, long-press/right-click forgets); each tap also feeds that glyph's token into the input so you can watch it decode live. Decrypt turns tokens back into letters underneath. The key chart lives on the <a href="https://gravityfalls.fandom.com/wiki/List_of_cryptograms/Books" target="_blank" rel="noopener">Wiki · Author's Symbol Alphabet&nbsp;↗</a> — snap it into the vault below for a side-by-side cheat sheet. Bindings stay on this browser.</p>
+        </div>
+        <div class="keyarea" data-key="bill">
+          <h5>BILL'S SYMBOL ALPHABET</h5>
+          <div class="gkey" id="billKey"></div>
+          <p class="keyhint">Every character below is the original individual image from the Gravity Falls Wiki. Tap a symbol to add it to the input; the alphabet is fixed A→Z.</p>
         </div>
       </div>
     </aside>
@@ -2100,16 +2113,103 @@ const GLYPH_ART=[   /* AUTHOR set — 26 traced wiki glyphs (symbol cipher, exac
 	 '<g transform="translate(0.000 8.148) scale(0.51852)"><g transform="translate(0.0 92.0) scale(0.1 -0.1)"><path d="M52 813 c-4 -10 -7 -174 -7 -364 l0 -346 14 -17 14 -17 453 3 c249 2 456 6 460 10 12 12 17 337 9 551 l-7 197 -157 -2 -156 -3 -8 -135 c-4 -74 -11 -164 -15 -200 l-7 -65 -35 -17 c-41 -21 -146 -24 -185 -6 -34 15 -42 52 -49 230 -3 80 -9 154 -12 163 -11 27 -49 35 -180 35 l-125 0 -7 -17z m248 -150 c0 -196 24 -278 90 -318 l35 -20 90 1 c170 1 194 37 211 322 l7 122 104 0 103 0 -2 -317 -3 -318 -415 0 -415 0 -3 318 -2 317 100 0 100 0 0 -107z"/></g></g>', /* Y */
 	 '<g transform="translate(3.652 0.000) scale(0.69565)"><g transform="translate(0.0 92.0) scale(0.1 -0.1)"><path d="M100 868 c-59 -22 -62 -43 -58 -450 l3 -357 18 -18 18 -18 240 -3 c251 -4 289 -1 289 22 0 24 -29 28 -265 38 -127 5 -231 11 -231 11 -1 1 -4 75 -7 165 l-5 162 238 0 c131 0 245 3 254 6 13 5 23 38 14 46 -2 1 -115 5 -253 8 l-250 5 0 155 0 155 65 7 c36 5 148 11 250 15 l185 8 3 16 c2 9 -5 20 -15 24 -34 14 -455 16 -493 3z"/></g></g>', /* Z */
 ];
-const BILL_ART_DEF='<path d="M28 4 L52 56 L4 56 Z"/><path class="fillstrokeofill" d="M28 31l0.1 0z"/>';   /* ▲ + central eye-dot (Bill's tie-in) */
-const GLYPH_LETTERS=A26.split('');                                     /* grid rows: A..Z     */
-const AUTHOR_TOKENS=GLYPH_LETTERS.map((_,i)=>'_a'+i+'_');              /* tokens 0..25        */
-const BILL_TOKENS=['_b0_'];                                            /* Bill extra          */
-const AUTHOR_ART=[...GLYPH_ART,...[BILL_ART_DEF]];
-const AUTHOR_NAME_MAP={};
-const GLYPH_TOKENS_ALL=[...AUTHOR_TOKENS,...BILL_TOKENS];
-GLYPH_LETTERS.forEach((L,i)=>AUTHOR_NAME_MAP[AUTHOR_TOKENS[i]]=AUTHOR_TOKENS[i]);
-AUTHOR_NAME_MAP[BILL_TOKENS[0]]=BILL_TOKENS[0];
 
+/* ===== BILL CIPHER SYMBOL ALPHABET =====
+   26 symbols used by Bill Cipher's substitution cipher.
+   Canonical source: Gravity Falls Wiki — List of cryptograms/Books
+   (Bill's symbol substitution cipher chart). Each is drawn as SVG paths
+   in a 56×64 viewBox to match the Author glyph slots. Strokes are
+   square/blocky to match Bill's "ancient digital block" aesthetic. */
+const BILL_GLYPH_ART=[
+  /* A — vertical squiggle/snake with a small circle at the base */
+  '<g class="bfill"><path d="M28 10 C18 18 38 28 28 36 C18 44 38 50 28 56"/><circle cx="20" cy="54" r="4"/></g>',
+  /* B — semicircle open to the left with a small horizontal line at the bottom */
+  '<g class="bfill"><path d="M40 12 Q14 12 14 32 Q14 52 40 52"/><path d="M16 56 L40 56"/></g>',
+  /* C — three-pronged fork / psi (Ψ): square U with center vertical bar */
+  '<g class="bfill"><path d="M40 8 L14 8 L14 56 L40 56 M27 8 L27 40"/></g>',
+  /* D — backward J with a small dot to its left */
+  '<g class="bfill"><path d="M36 8 L36 48 Q36 56 28 56 L20 56"/><circle cx="14" cy="48" r="4"/></g>',
+  /* E — backward N with a horizontal line through the middle */
+  '<g class="bfill"><path d="M14 8 L42 8 L14 56 L42 56 M14 32 L42 32"/></g>',
+  /* F — U-shape (square bracket opening up) with a small square notch inside at top */
+  '<g class="bfill"><path d="M14 56 L14 12 L42 12 L42 56"/><rect x="22" y="12" width="12" height="10" fill="none" stroke-width="5"/></g>',
+  /* G — two horizontal lines connected by two short vertical lines in the center */
+  '<g class="bfill"><path d="M12 16 L44 16 M12 48 L44 48 M22 16 L22 48 M34 16 L34 48"/></g>',
+  /* H — capital I shape (vertical bar with top/bottom horizontal caps) with two dots on either side */
+  '<g class="bfill"><path d="M28 8 L28 56 M12 8 L44 8 M12 56 L44 56"/><circle cx="18" cy="32" r="3"/><circle cx="38" cy="32" r="3"/></g>',
+  /* I — triangle with a vertical line through the center, topped with a horizontal bar */
+  '<g class="bfill"><path d="M28 14 L46 50 L10 50 Z M28 14 L28 50 M18 8 L38 8"/></g>',
+  /* J — hourglass (two triangles touching at their points) */
+  '<g class="bfill"><path d="M12 8 L44 8 L28 34 Z M28 34 L12 56 L44 56 Z"/></g>',
+  /* K — right-pointing triangle with two vertical lines on its left edge */
+  '<g class="bfill"><path d="M24 8 L48 32 L24 56 Z M14 8 L14 56 M18 8 L18 56"/></g>',
+  /* L — square with a small dot in the center */
+  '<g class="bfill"><rect x="12" y="8" width="32" height="48" fill="none" stroke-width="6"/><circle cx="28" cy="32" r="4"/></g>',
+  /* M — two small squares stacked vertically */
+  '<g class="bfill"><rect x="18" y="10" width="20" height="18" fill="none" stroke-width="5"/><rect x="18" y="36" width="20" height="18" fill="none" stroke-width="5"/></g>',
+  /* N — vertical wavy line with a dot at the top and a dot at the bottom */
+  '<g class="bfill"><path d="M28 14 C20 22 36 30 28 38 C20 46 36 50 28 54"/><circle cx="28" cy="10" r="4"/><circle cx="28" cy="58" r="4"/></g>',
+  /* O — semicircle (dome) sitting on a horizontal line */
+  '<g class="bfill"><path d="M10 40 L46 40 M10 40 Q10 12 28 12 Q46 12 46 40"/></g>',
+  /* P — diagonal line with three small circles along its length */
+  '<g class="bfill"><path d="M14 52 L42 12"/><circle cx="16" cy="48" r="4"/><circle cx="28" cy="32" r="4"/><circle cx="40" cy="16" r="4"/></g>',
+  /* Q — blocky square shape with a vertical line extending down from the right (like a digital 9) */
+  '<g class="bfill"><path d="M14 8 L42 8 L42 40 L14 40 L14 8 M42 40 L42 58"/></g>',
+  /* R — diamond shape with a diagonal line inside it */
+  '<g class="bfill"><path d="M28 8 L48 32 L28 56 L8 32 Z M16 24 L40 40"/></g>',
+  /* S — upside-down triangle */
+  '<g class="bfill"><path d="M28 56 L8 8 L48 8 Z"/></g>',
+  /* T — vertical line with two tiny triangles pointing outward at the base */
+  '<g class="bfill"><path d="M28 8 L28 40 M10 52 L24 40 L24 56 Z M32 40 L46 40 L46 56 L32 56 Z"/></g>',
+  /* U — capital E rotated 90° counter-clockwise (backwards 3) */
+  '<g class="bfill"><path d="M42 8 L42 56 L14 56 M42 8 L14 8 M42 32 L22 32"/></g>',
+  /* V — backward L shape with a small circle at the inner corner */
+  '<g class="bfill"><path d="M40 8 L40 48 L16 48 L16 8"/><circle cx="22" cy="42" r="4"/></g>',
+  /* W — simple diamond shape */
+  '<g class="bfill"><path d="M28 8 L48 32 L28 56 L8 32 Z"/></g>',
+  /* X — capital H rotated 90 degrees */
+  '<g class="bfill"><path d="M8 20 L48 20 M8 44 L48 44 M20 8 L20 56"/></g>',
+  /* Y — three small circles connected by lines, forming a V shape */
+  '<g class="bfill"><path d="M14 14 L28 36 L42 14"/><circle cx="14" cy="14" r="4"/><circle cx="42" cy="14" r="4"/><circle cx="28" cy="40" r="4"/></g>',
+  /* Z — two parallel squiggly vertical lines */
+  '<g class="bfill"><path d="M18 10 C12 18 24 26 18 34 C12 42 24 50 18 56 M40 10 C34 18 46 26 40 34 C34 42 46 50 40 56"/></g>',
+];
+/* Each Bill glyph is the wiki's individual letter image, in A..Z order.
+   These are the actual transparent character elements, not chart crops. */
+const BILL_WIKI_GLYPHS=[
+  'https://static.wikia.nocookie.net/gravityfalls/images/e/e5/Bill%27s_cipher_-_A.png/revision/latest?cb=20240819224841',
+  'https://static.wikia.nocookie.net/gravityfalls/images/4/44/Bill%27s_cipher_-_B.png/revision/latest?cb=20240819224920',
+  'https://static.wikia.nocookie.net/gravityfalls/images/c/cb/Bill%27s_cipher_-_C.png/revision/latest?cb=20240819224939',
+  'https://static.wikia.nocookie.net/gravityfalls/images/5/5b/Bill%27s_cipher_-_D.png/revision/latest?cb=20240819224957',
+  'https://static.wikia.nocookie.net/gravityfalls/images/9/9e/Bill%27s_cipher_-_E.png/revision/latest?cb=20240819225057',
+  'https://static.wikia.nocookie.net/gravityfalls/images/a/af/Bill%27s_cipher_-_F.png/revision/latest?cb=20240819225117',
+  'https://static.wikia.nocookie.net/gravityfalls/images/b/b5/Bill%27s_cipher_-_G.png/revision/latest?cb=20240819225136',
+  'https://static.wikia.nocookie.net/gravityfalls/images/a/a9/Bill%27s_cipher_-_H.png/revision/latest?cb=20240819225200',
+  'https://static.wikia.nocookie.net/gravityfalls/images/8/87/Bill%27s_cipher_-_I.png/revision/latest?cb=20240819225220',
+  'https://static.wikia.nocookie.net/gravityfalls/images/3/3e/Bill%27s_cipher_-_J.png/revision/latest?cb=20240819225242',
+  'https://static.wikia.nocookie.net/gravityfalls/images/6/66/Bill%27s_cipher_-_K.png/revision/latest?cb=20240819225305',
+  'https://static.wikia.nocookie.net/gravityfalls/images/1/19/Bill%27s_cipher_-_L.png/revision/latest?cb=20240819225322',
+  'https://static.wikia.nocookie.net/gravityfalls/images/a/af/Bill%27s_cipher_-_M.png/revision/latest?cb=20240819225341',
+  'https://static.wikia.nocookie.net/gravityfalls/images/5/5f/Bill%27s_cipher_-_N.png/revision/latest?cb=20240819225400',
+  'https://static.wikia.nocookie.net/gravityfalls/images/c/ce/Bill%27s_cipher_-_O.png/revision/latest?cb=20240819225440',
+  'https://static.wikia.nocookie.net/gravityfalls/images/8/8a/Bill%27s_cipher_-_P.png/revision/latest?cb=20240819225508',
+  'https://static.wikia.nocookie.net/gravityfalls/images/e/e3/Bill%27s_cipher_-_Q.png/revision/latest?cb=20240819225543',
+  'https://static.wikia.nocookie.net/gravityfalls/images/f/fd/Bill%27s_cipher_-_R.png/revision/latest?cb=20240819225613',
+  'https://static.wikia.nocookie.net/gravityfalls/images/5/5e/Bill%27s_cipher_-_S.png/revision/latest?cb=20240819225639',
+  'https://static.wikia.nocookie.net/gravityfalls/images/3/35/Bill%27s_cipher_-_T.png/revision/latest?cb=20240819225658',
+  'https://static.wikia.nocookie.net/gravityfalls/images/b/bc/Bill%27s_cipher_-_U.png/revision/latest?cb=20240819225715',
+  'https://static.wikia.nocookie.net/gravityfalls/images/0/0d/Bill%27s_cipher_-_V.png/revision/latest?cb=20240819225731',
+  'https://static.wikia.nocookie.net/gravityfalls/images/5/5a/Bill%27s_cipher_-_W.png/revision/latest?cb=20240819225748',
+  'https://static.wikia.nocookie.net/gravityfalls/images/b/b1/Bill%27s_cipher_-_X.png/revision/latest?cb=20240819225810',
+  'https://static.wikia.nocookie.net/gravityfalls/images/3/3c/Bill%27s_cipher_-_Y.png/revision/latest?cb=20240819225828',
+  'https://static.wikia.nocookie.net/gravityfalls/images/8/8e/Bill%27s_cipher_-_Z.png/revision/latest?cb=20240819225851'
+];
+const GLYPH_LETTERS=A26.split('');                                     /* grid rows: A..Z     */
+const AUTHOR_TOKENS=GLYPH_LETTERS.map((_,i)=>'_a'+i+'_');              /* Author tokens 0..25 */
+const BILL_TOKENS=GLYPH_LETTERS.map((_,i)=>'_c'+i+'_');                 /* Bill cipher tokens 0..25 */
+const AUTHOR_NAME_MAP={};
+const GLYPH_TOKENS_ALL=AUTHOR_TOKENS;
+GLYPH_LETTERS.forEach((L,i)=>AUTHOR_NAME_MAP[AUTHOR_TOKENS[i]]=AUTHOR_TOKENS[i]);
 const LS_KEY='gf-cipher-tool-v2';  /* bumped: old v1 glyphMap pointed at placeholder glyphs */
 let glyphMap={}, customMaps={}, epStore={};
 function glyphSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({gmap:glyphMap,cmaps:customMaps,ep:epStore})); }catch(e){} }
@@ -2117,31 +2217,41 @@ function glyphSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({gmap:gly
   glyphMap=s.gmap||{}; customMaps=s.cmaps||{}; epStore=s.ep||{};
 }catch(e){} })();
 
-/* Author set uses traced-wiki filled outlines (class gfill); Bill keeps stroke art. */
+/* Author set uses traced-wiki filled outlines (class gfill); Bill set uses
+   blocky stroke art (class billg/bfill). */
 function glyphSVG(d,cls){ return `<svg class="${cls||'gfill'}" viewBox="0 0 56 64" aria-hidden="true">${d}</svg>`; }
-function glyphArt(tok){
-  if(tok===BILL_TOKENS[0]) return glyphSVG(BILL_ART_DEF,'billg');
-  const i=AUTHOR_TOKENS.indexOf(tok);
-  if(i<0) return '';
-  return glyphSVG(GLYPH_ART[i]);
+function billWikiGlyph(i){
+  return `<svg class="billg" viewBox="0 0 56 64" aria-hidden="true"><image href="${BILL_WIKI_GLYPHS[i]}" x="0" y="0" width="56" height="64" preserveAspectRatio="xMidYMid meet"/></svg>`;
 }
-/* Render a text stream into the output pane, swapping each _aN_/_bN_ token for
-   its visible glyph. Anything not a token is shown as literal text so mixed
-   decrypt results stay readable. */
+function glyphArt(tok){
+  const ai=AUTHOR_TOKENS.indexOf(tok);
+  if(ai>=0) return glyphSVG(GLYPH_ART[ai]);
+  const bi=BILL_TOKENS.indexOf(tok);
+  if(bi>=0) return billWikiGlyph(bi);
+  return '';
+}
+/* Render a text stream into the output pane, swapping each _aN_/_bN_/_cN_
+   token for its visible glyph. Anything not a token is shown as literal text
+   so mixed decrypt results stay readable. */
 function renderGlyphPane(el, text){
   if(!el) return;
   el.innerHTML='';
   if(!text){ el.hidden=true; return; }
-  const re=/(_[ab]\d+_)/g;
+  const re=/(_[ac]\d+_)/g;
   let any=false;
   text.split(re).forEach(part=>{
     if(!part) return;
-    if(/_[ab]\d+_/.test(part)){
-      const i=AUTHOR_TOKENS.indexOf(part);
-      const isBill=part===BILL_TOKENS[0];
-      if(i>=0||isBill){
+    if(/_[ac]\d+_/.test(part)){
+      const ai=AUTHOR_TOKENS.indexOf(part);
+      const bi=BILL_TOKENS.indexOf(part);
+      if(ai>=0){
         el.insertAdjacentHTML('beforeend',
-          `<span class="gv" title="${isBill?'Bill':GLYPH_LETTERS[i]}">${isBill?glyphSVG(BILL_ART_DEF,'billg'):glyphSVG(GLYPH_ART[i])}</span>`);
+          `<span class="gv" title="${GLYPH_LETTERS[ai]}">${glyphSVG(GLYPH_ART[ai])}</span>`);
+        any=true; return;
+      }
+      if(bi>=0){
+        el.insertAdjacentHTML('beforeend',
+          `<span class="gv" title="${GLYPH_LETTERS[bi]}">${billWikiGlyph(bi)}</span>`);
         any=true; return;
       }
     }
@@ -2155,15 +2265,15 @@ function renderGlyphPane(el, text){
   el.hidden=!any;
 }
 
-/* live subst tokenizer: underscores and digit runs hold together so _a0_ and
-   _b0_ never get eaten by the map's letter swap */
+/* live subst tokenizer: underscores and digit runs hold together so _a0_,
+   _b0_, and _c0_ never get eaten by the map's letter swap */
 function substTokensSubst(t,map,dec){
   const parts=t.split(/(_)/);           /* split on '_' kept as its own parts */
   let out='',carry='';
   for(const p of parts){
     carry+=p;
     if(p==='_'){
-      if(carry.length>1 && /_[ab]\d+_$/.test(carry)){ out+=carry; carry=''; continue; }
+      if(carry.length>1 && /_[abc]\d+_$/.test(carry)){ out+=carry; carry=''; continue; }
       /* complete token? decode: replace with mapped letter; encode: already emitted tokens pass through */
       continue;
     }
@@ -2179,15 +2289,13 @@ function applySubstRun(s,map,dec){ if(map.length!==26)return s;
     const o=dec?A26[map.indexOf(c.toUpperCase())]:map[i];
     return c<='Z'?o:o.toLowerCase();}); }
 
-/* AUTHOR-set substitution driven by the user-keyed glyphMap.
-   EN crypt: letter -> token string.  DEcrypt: token string -> letter via reverse map. */
+/* Author-symbol substitution driven by the user-keyed glyphMap. */
 function authorGlyphMap(dec){
-  /* build full keyed alphabet: prefer user bindings; unbound letters fall back to their slot token */
   const m={};
   for(let i=0;i<26;i++){
     const L=GLYPH_LETTERS[i];
-    const userTok=glyphMap[L];                        /* e.g. '_a9_' or '_b0_' */
-    m[L]=userTok||AUTHOR_TOKENS[i];
+    const userTok=glyphMap[L];
+    m[L]=AUTHOR_TOKENS.includes(userTok) ? userTok : AUTHOR_TOKENS[i];
   }
   return dec?invertMap(m):m;
 }
@@ -2214,6 +2322,25 @@ function substAuthor(t,dec){
   return out;
 }
 
+/* Bill's cipher has a fixed, published A→Z key. The characters themselves
+   are rendered from the wiki's individual transparent image elements. */
+function substBill(t,dec){
+  const map={};
+  GLYPH_LETTERS.forEach((L,i)=>{ map[L]=BILL_TOKENS[i]; });
+  if(!dec) return [...t].map(c=>{
+    if(!/[A-Za-z]/.test(c)) return c;
+    return map[c.toUpperCase()];
+  }).join('');
+  const reverse=invertMap(map), keys=Object.keys(reverse).sort((a,b)=>b.length-a.length);
+  let out='',i=0;
+  while(i<t.length){
+    const token=keys.find(k=>t.slice(i,i+k.length).toUpperCase()===k.toUpperCase());
+    if(token){ out+=reverse[token]; i+=token.length; }
+    else { out+=t[i++]; }
+  }
+  return out;
+}
+
 /* ================= EPISODE METADATA KEY ([[EP]] i, j, k) ================= */
 /* The red numbers on flash-frame puzzle pieces index into a season-1 episode's
    DECODED end-credit message. The engine ships only episode titles/season; the
@@ -2227,23 +2354,33 @@ const EP_DEFAULTS=[
   ['18','Land Before Swine'],['19','Dreamscaperers'],['20','Gideon Rises']
 ];
 function epEntry(n){ if(!epStore[n]) epStore[n]=null; return EP_DEFAULTS.find(e=>e[0]===n); }
+function epMetaResolve(ep, nums){
+  const msg=(epStore[ep]||'').replace(/[^A-Za-z]/g,'').toUpperCase();
+  const idxs=nums.replace(/\./g,'·').split(/·+/).map(w=>w.trim()).filter(Boolean);
+  const words=idxs.map(word=>{
+    const letter=[...word.matchAll(/\d+/g)].map(m=>{
+      const i=+m[0]-1;
+      return (i>=0&&i<msg.length)?msg[i]:'·';
+    }).join('');
+    return letter;
+  });
+  return words.join(' ').toLowerCase();
+}
 function substEpMeta(t){
-  /* decrypt path only: parse [[EP]] i, j, k groups; anything else passes through */
+  /* decrypt path only. Two input modes:
+     1) [[EP]] i,j,k syntax pasted directly in the input textarea (legacy)
+     2) Episode dropdown + positions field in the key panel (primary UI) */
   const groups=[...t.matchAll(/\[\[(\d{1,2})\]\]\s*([\d\s,·.]+)\]?/g)];
-  if(!groups.length) return t;
-  return groups.map(g=>{
-    const [,ep, nums]=g;
-    const msg=(epStore[ep]||'').replace(/[^A-Za-z]/g,'').toUpperCase();
-    const idxs=nums.replace(/\./g,'·').split(/·+/).map(w=>w.trim()).filter(Boolean);
-    const words=idxs.map(word=>{
-      const letter=[...word.matchAll(/\d+/g)].map(m=>{
-        const i=+m[0]-1;
-        return (i>=0&&i<msg.length)?msg[i]:'·';
-      }).join('');
-      return letter;
-    });
-    return words.join(' ');
-  }).join(' · ').toLowerCase();
+  if(groups.length){
+    return groups.map(g=>epMetaResolve(g[1],g[2])).join(' · ');
+  }
+  /* No [[EP]] syntax in the text: read from the dropdown + positions field */
+  const epEl=$('#epEp'), idxEl=$('#epIdx');
+  if(epEl && idxEl){
+    const ep=epEl.value, nums=idxEl.value;
+    if(ep && nums.trim()) return epMetaResolve(ep, nums);
+  }
+  return t;
 }
 
 /* ================= VAULT IMAGE PIPE =================
@@ -2274,7 +2411,7 @@ function applyCipher(t,m,key,dec){
   switch(m){ case 'caesar':return caesar(t,parseInt(key)||3,dec);
     case 'atbash':return atbash(t); case 'a1z26':return a1z26(t,dec);
     case 'vigenere':return vigenere(t,key,dec); case 'subst':return subst(t,normMap(key),dec);
-    case 'author':return substAuthor(t,dec);
+    case 'author':return substAuthor(t,dec); case 'bill':return substBill(t,dec);
     case 'epmeta':return substEpMeta(t); } return t; }
 
 /* ================= ENGINE STATE / UI ================= */
@@ -2285,6 +2422,7 @@ function setMethod(m){ method=m;
   $$('.method').forEach(b=>b.classList.toggle('active',b.dataset.method===m));
   $$('.keyarea').forEach(k=>k.classList.toggle('show',k.dataset.key===m));
   if(m==='author') buildGlyphGrid();
+  if(m==='bill') buildBillGrid();
   if(m==='epmeta') buildEpSelect();
   run(); }
 function setMode(m){ mode=m;
@@ -2327,6 +2465,7 @@ function statusText(){
       vigenere:`KEY "${$('#vigKey').value.trim()||'—'}"`,
       subst:normMap($('#substMap').value).length===26?'MAP LOCKED':'MAP INCOMPLETE',
       author:(()=>{const n=Object.keys(glyphMap).filter(k=>glyphMap[k]).length;return n?`${n}/26 GLYPHS KEYED`:'KEY GRID EMPTY';})(),
+      bill:'WIKI A–Z KEY',
       epmeta:(()=>{const e=$('#epEp');return e.value?`EP ${e.value} · ${(epStore[e.value]||'EMPTY').length?'STORED':'AWAITING YOUR MSG'}`:'IDLE';})()
     }[method];
     return `ENGINE ARMED ▸ ${method.toUpperCase()} ▸ ${info} · ${M}`; }
@@ -2349,7 +2488,7 @@ function statusText(){
     /* Symbol pane shows whichever side carries the tokens: decrypt = the input
        you pasted/clicked glyphs into; encrypt (or any other stream that happens
        to hold tokens) = the output the engine emitted. */
-    renderGlyphPane($('#glyphView'), /_[ab]\d+_/.test(inT.value)?inT.value:out);
+    renderGlyphPane($('#glyphView'), /_[abc]\d+_/.test(inT.value)?inT.value:out);
     $('#inCount').textContent=inT.value.length+' CHARS';
     $('#outCount').textContent=out.length+' CHARS';
     $('#statusText').textContent=statusText();
@@ -2359,7 +2498,7 @@ function statusText(){
     if(method==='author') glyphRefreshCount();
     if(method==='epmeta') epRefreshHint();
   }
-  [inT,$('#caesarShift'),$('#vigKey'),$('#substMap'),$('#epIdx')].forEach(el=>el.addEventListener('input',()=>{
+  [inT,$('#caesarShift'),$('#vigKey'),$('#substMap'),$('#epIdx'),$('#epEp')].forEach(el=>el.addEventListener('input',()=>{
     run(); const box=$('#outBox'); box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash');
     if(el===$('#epIdx')) epRefreshHint();
   }));
@@ -2395,15 +2534,16 @@ $$('.arm').forEach(b=>b.addEventListener('click',()=>{
   const st=$('#statusBox'); st.classList.remove('pulse'); void st.offsetWidth; st.classList.add('pulse'); }));
 
 /* ================= AUTHOR GLYPH GRID UI ================= */
-/* Builds the 26-cell letter↔glyph key grid once per season of focus. Clicking a
-   cell keys THAT letter to the glyph shown; long-press / right-click un-keys it.
-   The Bill extra glyph gets a 27th cell labeled "▲" (key it to any letter you like). */
+/* Builds the Author-only 26-cell letter↔glyph key grid. */
 let gGridBuilt=false;
 function glyphRefreshCount(){
   const n=Object.values(glyphMap).filter(Boolean).length;
   const el=$('#gMapCount'); if(el) el.textContent=`${n} / 26 GLYPHS KEYED`;
   const btn=$('#gMapClear'); if(btn) btn.classList.toggle('dirty', n>0);
 }
+function activeGlyphArt(i){ return glyphSVG(GLYPH_ART[i]); }
+function activeFallbackTokens(){ return AUTHOR_TOKENS; }
+function activeTokenPool(){ return GLYPH_TOKENS_ALL; }
 function buildGlyphGrid(){
   if(gGridBuilt){ glyphRefreshCount(); return; }
   gGridBuilt=true;
@@ -2413,43 +2553,43 @@ function buildGlyphGrid(){
     const cell=document.createElement('button');
     cell.type='button'; cell.className='gcell'; cell.dataset.letter=L;
     cell.title=`${L} — tap to step glyph → · shift-tap to step back · long-press/right-click to forget`;
-    cell.innerHTML=`<span>${L}</span>${glyphSVG(GLYPH_ART[i])}`;
+    cell.innerHTML=`<span>${L}</span>${activeGlyphArt(i)}`;
     cell.addEventListener('click',e=>cycleGlyph(L, e.shiftKey?-1:+1));
     cell.addEventListener('contextmenu',e=>{e.preventDefault(); unkeyGlyph(L, cell);});
     let pressT; cell.addEventListener('pointerdown',()=>{ pressT=setTimeout(()=>unkeyGlyph(L,cell),600); });
     ['pointerup','pointerleave','pointercancel'].forEach(ev=>cell.addEventListener(ev,()=>clearTimeout(pressT)));
     host.appendChild(cell);
   });
-  /* Bill tie-in cell */
-  const bc=document.createElement('button');
-  bc.type='button'; bc.className='gcell'; bc.dataset.letter='BILL';
-  bc.title="Bill's extra glyph — key it by stepping any letter until ▲ appears";
-  bc.innerHTML=`<span>▲</span>${glyphSVG(BILL_ART_DEF,'billg')}`;
-  host.appendChild(bc);
-  $('#gMapClear').onclick=()=>{ glyphMap={}; glyphSave(); paintGlyphGrid(); glyphRefreshCount(); run(); };
+  const clearBtn=$('#gMapClear');
+  if(clearBtn) clearBtn.onclick=()=>{ glyphMap={}; glyphSave(); paintGlyphGrid(); glyphRefreshCount(); run(); };
   paintGlyphGrid(); glyphRefreshCount();
 }
 function paintGlyphGrid(){
   const host=$('#gKey'); if(!host) return;
   [...host.children].forEach(c=>{
-    const L=c.dataset.letter; if(L==='BILL'){ c.classList.remove('bound'); return; }
-    const i=GLYPH_LETTERS.indexOf(L), tok=glyphMap[L];
-    c.querySelector('svg').outerHTML = glyphArt(tok||AUTHOR_TOKENS[i]);
+    const L=c.dataset.letter;
+    const i=GLYPH_LETTERS.indexOf(L), raw=glyphMap[L];
+    const tok=AUTHOR_TOKENS.includes(raw) ? raw : undefined;
+    const fallback = activeFallbackTokens()[i];
+    c.querySelector('svg').outerHTML = glyphArt(tok||fallback);
     c.classList.toggle('bound', !!tok);
   });
 }
 function cycleGlyph(L, dir){                                                                          /* dir:+1 fwd, -1 back  */
-  const cur=glyphMap[L];                              /* undefined = unkeyed  */
-  const i=cur?GLYPH_TOKENS_ALL.indexOf(cur):-1;
+  const pool=activeTokenPool();
+  const raw=glyphMap[L];
+  const cur=AUTHOR_TOKENS.includes(raw) ? raw : undefined;
+  const i=cur?pool.indexOf(cur):-1;
   if(i===-1){                                         /* unkeyed -> start on ITS OWN glyph (the one drawn in the cell) */
-    glyphMap[L] = dir>0 ? AUTHOR_TOKENS[GLYPH_LETTERS.indexOf(L)] : AUTHOR_TOKENS[GLYPH_LETTERS.indexOf(L)];
-  } else if(i+dir<0 || i+dir>=GLYPH_TOKENS_ALL.length){
+    const fallback = activeFallbackTokens()[GLYPH_LETTERS.indexOf(L)];
+    glyphMap[L] = fallback;
+  } else if(i+dir<0 || i+dir>=pool.length){
     delete glyphMap[L];                               /* wrapped off the end -> unkey */
-  } else glyphMap[L]=GLYPH_TOKENS_ALL[i+dir];
+  } else glyphMap[L]=pool[i+dir];
   glyphSave(); paintGlyphGrid(); glyphRefreshCount(); run();
   /* Feed the tapped glyph into the input so the answer visibly appears in the
-     output's glyph pane. Only when this method is live — a stray click on an
-     armed-but-inactive grid shouldn't hijack whatever cipher is running. */
+      output's glyph pane. Only when this method is live — a stray click on an
+      armed-but-inactive grid shouldn't hijack whatever cipher is running. */
   if(method==='author' && glyphMap[L]){
     inT.value += glyphMap[L];
     run();
@@ -2458,6 +2598,27 @@ function cycleGlyph(L, dir){                                                    
 }
 function unkeyGlyph(L, cell){ if(glyphMap[L]){ delete glyphMap[L]; glyphSave(); paintGlyphGrid(); glyphRefreshCount(); run(); } }
 
+/* ================= BILL GLYPH GRID =================
+   This is deliberately separate from the Author key. Every button uses the
+   wiki's corresponding A–Z image element and the published fixed mapping. */
+let billGridBuilt=false;
+function buildBillGrid(){
+  const host=$('#billKey'); if(!host||billGridBuilt) return;
+  GLYPH_LETTERS.forEach((L,i)=>{
+    const cell=document.createElement('button');
+    cell.type='button'; cell.className='gcell';
+    cell.title=`Bill cipher ${L}`;
+    cell.innerHTML=`<span>${L}</span>${billWikiGlyph(i)}`;
+    cell.addEventListener('click',()=>{
+      if(method!=='bill') return;
+      inT.value+=BILL_TOKENS[i];
+      run();
+      const box=$('#outBox'); box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash');
+    });
+    host.appendChild(cell);
+  });
+  billGridBuilt=true;
+}
 /* ================= EPISODE SELECT UI ================= */
 let epSelBuilt=false;
 function buildEpSelect(){
