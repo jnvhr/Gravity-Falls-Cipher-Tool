@@ -1423,7 +1423,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);
           <h5>EPISODE METADATA KEY · [[EP]] i, j, k</h5>
           <select id="epEp"></select>
           <input type="text" id="epIdx" placeholder="positions — e.g. 8, 9, 10 · 14, 17, 22" spellcheck="false">
-          <p class="keyhint">The number by the screen picks the episode; the red numbers read that many letters off its decoded credits — "[[EP]] 8, 9, 10" pulls those letters in order. Add "·" to start a new word.</p>
+          <p class="keyhint">The number by the screen picks the episode; the red numbers read that many letters off its decoded credits. Pieces join together by default; use "·" between words, including after a piece when the next episode continues the same bracketed message.</p>
           <div class="ep-ledger">
             <div class="keybar"><span>STORED EXTRACTIONS</span><button id="epLedgerClear" type="button">CLEAR LEDGER</button></div>
             <textarea id="epLedger" readonly spellcheck="false" placeholder="Your extracted pieces will collect here with spacing preserved."></textarea>
@@ -2378,8 +2378,14 @@ function epRememberOrder(ep){
   if(ep && epIdxStore[ep] && epIdxStore[ep].trim() && !epOrder.includes(ep)) epOrder.push(ep);
 }
 function epLedgerText(){
-  return epOrder.map(ep=>epMetaResolve(ep,epIdxStore[ep]||'')).filter(Boolean).join(' ')
-    .replace(/\s+/g,' ').trim();
+  return epOrder.map(ep=>{
+    const nums=epIdxStore[ep]||'';
+    const result=epMetaResolve(ep,nums);
+    /* Episode references inside one square bracket are one word. A middle dot
+       is the explicit word boundary, even when the next piece uses another
+       episode. */
+    return result + (/[·.]\s*$/.test(nums)?' ':'');
+  }).join('').replace(/\s+/g,' ').trim();
 }
 function epRefreshLedger(){
   const el=$('#epLedger'); if(el) el.value=epLedgerText();
